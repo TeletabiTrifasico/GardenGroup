@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="GardenGroup.Views.Login"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GardenGroup.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="White"
+             FontSize="15">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Label FontSize="30" 
+                   VerticalAlignment="Bottom" HorizontalAlignment="Center">Login</Label>
+        </Grid>
+        
+        <Grid Grid.Row="1" Width="150">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Margin="0,15,0,0">Username</Label>
+            <TextBox x:Name="usernameTxt"
+                     Grid.Row="1" 
+                     Width="150" Height="20"
+                     BorderBrush="Green"/>
+        </Grid>
+        
+        <Grid Grid.Row="2" Width="150">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Margin="0,15,0,0">Password</Label>
+            <PasswordBox x:Name="passwordTxt"
+                     Grid.Row="1" 
+                     Width="150"
+                     BorderBrush="Green"/>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+                   x:Name="errorLabel"
+                   HorizontalAlignment="Center"
+                   FontSize="12"
+                   Visibility="Hidden"
+                   Foreground="Red"
+                   Content=""/>
+            <Button x:Name="loginBtn"
+                    Grid.Row="1"
+                    Width="100"
+                    Background="DarkSlateGray" Foreground="White"
+                    VerticalAlignment="Bottom"
+                    Click="loginBtn_Click">
+                Login
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>
