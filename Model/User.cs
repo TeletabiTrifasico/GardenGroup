@@ -8,9 +8,8 @@ namespace Model
 {
     public enum Privilieges
     {
-        // Change this names later
-        Normal,
-        Administrator,
+        Employee,
+        ServiceDesk,
     }
 
     public class User
