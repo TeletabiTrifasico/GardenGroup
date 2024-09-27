@@ -16,9 +16,7 @@ using GardenGroup.ViewModels;
 
 namespace GardenGroup.Views
 {
-    /// <summary>
     /// Interaction logic for Login.xaml
-    /// </summary>
     public partial class Login : UserControl
     {
         public Login()
@@ -30,19 +28,18 @@ namespace GardenGroup.Views
         {
             var username = usernameTxt.Text;
             var password = passwordTxt.Password;
-
-            if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                errorLabel.Content = "Username or password is missing!";
-                errorLabel.Visibility = Visibility.Visible;
-            }
-
+            
             // Add login using database
             if (username is "admin" && password is "password")
                 ((LoginViewModel)DataContext).LoginCommand.Execute(this);
-            else
+            else if (password != "password" && username != "admin")
             {
-                errorLabel.Content = "Invalid username or password";
+                errorLabel.Content = "Invalid username or password!";
+                errorLabel.Visibility = Visibility.Visible;
+            }
+            else if (password != "password")
+            {
+                errorLabel.Content = "Invalid password!";
                 errorLabel.Visibility = Visibility.Visible;
             }
         }

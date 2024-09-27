@@ -5,12 +5,67 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:GardenGroup.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="350" d:DesignWidth="300"
              Background="White"
              FontSize="15">
+    <UserControl.Resources>
+        <!-- Style for Rounded TextBox -->
+        <Style TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for Rounded PasswordBox -->
+        <Style TargetType="PasswordBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Style for Rounded Button -->
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            CornerRadius="5"
+                            BorderThickness="1">
+                            <ContentPresenter 
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="70"/>
@@ -18,7 +73,13 @@
 
         <Grid Grid.Row="0">
             <Label FontSize="30" 
-                   VerticalAlignment="Bottom" HorizontalAlignment="Center">Login</Label>
+                   VerticalAlignment="Bottom" 
+                   HorizontalAlignment="Center" 
+                   FontWeight="Bold"
+                   Foreground="MediumSlateBlue"
+                   TextBlock.FontFamily="MS UI Gothic"
+                   >Get Started
+            </Label>
         </Grid>
         
         <Grid Grid.Row="1" Width="150">
@@ -27,11 +88,13 @@
                 <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Margin="0,15,0,0">Username</Label>
+            <Label Grid.Row="0" Margin="0,15,0,0" FontWeight="Bold" Foreground="DarkGray">Username</Label>
             <TextBox x:Name="usernameTxt"
                      Grid.Row="1" 
-                     Width="150" Height="20"
-                     BorderBrush="Green"/>
+                     Width="150" Height="25"
+                     Foreground="Gray"
+                     Background="#F1F1F1"
+                     BorderBrush="#F1F1F1"/>
         </Grid>
         
         <Grid Grid.Row="2" Width="150">
@@ -40,16 +103,18 @@
                 <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Margin="0,15,0,0">Password</Label>
+            <Label Grid.Row="0" Margin="0,15,0,0" FontWeight="Bold" Foreground="DarkGray">Password</Label>
             <PasswordBox x:Name="passwordTxt"
                      Grid.Row="1" 
-                     Width="150"
-                     BorderBrush="Green"/>
+                     Width="150" Height="25"
+                     Foreground="Gray"
+                     Background="#F1F1F1"
+                     BorderBrush="#F1F1F1"/>
         </Grid>
 
         <Grid Grid.Row="3">
             <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
 
@@ -61,9 +126,11 @@
                    Foreground="Red"
                    Content=""/>
             <Button x:Name="loginBtn"
+                    FontWeight="Medium"
                     Grid.Row="1"
-                    Width="100"
-                    Background="DarkSlateGray" Foreground="White"
+                    Width="100" Height="30"
+                    Background="MediumSlateBlue" Foreground="White"
+                    BorderBrush="MediumSlateBlue"
                     VerticalAlignment="Bottom"
                     Click="loginBtn_Click">
                 Login
