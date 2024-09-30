@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DAL;
+using GardenGroup.StartupHelpers;
 using GardenGroup.Views;
 using Service;
 
@@ -20,9 +21,9 @@ namespace GardenGroup
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(IServiceManager service)
+        public MainWindow(IViewModelFactory viewModelFactory)
         {
-            DataContext = new ViewModels.MainViewModel(service);
+            DataContext = new ViewModels.MainViewModel(viewModelFactory);
             InitializeComponent();
         }
     }
