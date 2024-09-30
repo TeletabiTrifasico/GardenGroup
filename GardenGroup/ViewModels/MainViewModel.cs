@@ -4,15 +4,19 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
+using Service;
 
 namespace GardenGroup.ViewModels
 {
     public sealed class MainViewModel : INotifyPropertyChanged
     {
+        public readonly IServiceManager _serviceManager;
         private object _currentView;
 
-        public MainViewModel()
+        public MainViewModel(IServiceManager serviceManager)
         {
+            _serviceManager = serviceManager;
             // Initialize with the Login view
             CurrentView = new LoginViewModel(this);
         }
@@ -30,7 +34,7 @@ namespace GardenGroup.ViewModels
         public void SwitchToDashboard()
         {
             // Switch to the Dashboard view
-            CurrentView = new DashboardViewModel();
+            CurrentView = new DashboardViewModel(_serviceManager);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

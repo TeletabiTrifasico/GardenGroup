@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GardenGroup.ViewModels;
+using Service;
 
 namespace GardenGroup.Views
 {
@@ -36,9 +37,9 @@ namespace GardenGroup.Views
                 errorLabel.Content = "Username or password is missing!";
                 errorLabel.Visibility = Visibility.Visible;
             }
-
+            
             // Add login using database
-            if (username is "admin" && password is "password")
+            if (((LoginViewModel)DataContext).ValidateLogin(username, password))
                 ((LoginViewModel)DataContext).LoginCommand.Execute(this);
             else
             {
