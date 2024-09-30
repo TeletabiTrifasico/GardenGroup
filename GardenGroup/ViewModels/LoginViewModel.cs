@@ -11,7 +11,10 @@ namespace GardenGroup.ViewModels
     public class LoginViewModel
     {
         private readonly MainViewModel _mainViewModel;
-        private IServiceManager _serviceManager;
+        private readonly IServiceManager _serviceManager;
+        
+        public ICommand LoginCommand { get; }
+        
         public LoginViewModel(IServiceManager serviceManager, MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -20,16 +23,9 @@ namespace GardenGroup.ViewModels
             LoginCommand = new RelayCommand(OnLogin);
         }
 
-        public ICommand LoginCommand { get; }
+        private void OnLogin(object parameter) => _mainViewModel.SwitchToDashboard();
 
-        private void OnLogin(object parameter)
-        {
-            _mainViewModel.SwitchToDashboard();
-        }
-
-        public bool ValidateLogin(string username, string password)
-        {
-            return _serviceManager.EmployeeService.ValidateLogin(username, password);
-        }
+        public bool ValidateLogin(string username, string password) =>
+            _serviceManager.EmployeeService.ValidateLogin(username, password);
     }
 }

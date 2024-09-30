@@ -11,9 +11,9 @@ namespace DAL
 {
     public class MongoCRUD
     {
-        protected readonly IMongoDatabase _db;
+        private readonly IMongoDatabase _db;
 
-        public MongoCRUD()
+        protected MongoCRUD()
         {
             var client = new MongoClient(ConfigurationManager.ConnectionStrings["GardenGroupDB"].ConnectionString);
             _db = client.GetDatabase(ConfigurationManager.ConnectionStrings["Collection"].ConnectionString);
