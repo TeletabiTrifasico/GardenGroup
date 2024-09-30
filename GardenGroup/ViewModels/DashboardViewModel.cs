@@ -11,7 +11,7 @@ namespace GardenGroup.ViewModels
 {
     public class DashboardViewModel
     {
-        public DashboardViewModel(IServiceManager serviceManager, MainWindow mainWindow)
+        public DashboardViewModel(IServiceManager serviceManager, MainViewModel mainViewModel)
         {
             
         }
