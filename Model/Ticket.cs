@@ -20,7 +20,7 @@ public class Ticket
     public string IncidentType { get; set; } = string.Empty;
     
     [BsonElement("assigned")]
-    public ObjectId Assigned { get; set; }
+    public Guid Assigned { get; set; }
     
     // Enum?
     [BsonElement("priority")]
@@ -35,4 +35,28 @@ public class Ticket
     // Emum?
     [BsonElement("status")]
     private string Status { get; set; } = string.Empty;
+
+    public Ticket CopyWith(
+        DateTime? dateReported,
+        string? subject,
+        string? incidentType,
+        Guid? assigned,
+        string? priority,
+        DateTime? deadline,
+        string? description,
+        string? status)
+    {
+        return new Ticket
+        {
+            Id = this.Id,
+            DateReported = dateReported ?? this.DateReported,
+            Subject = subject ?? this.Subject,
+            IncidentType = incidentType ?? this.IncidentType,
+            Assigned = assigned ?? this.Assigned,
+            Priority = priority ?? this.Priority,
+            Deadline = deadline ?? this.Deadline,
+            Description = description ?? this.Description,
+            Status = status ?? this.Status
+        };
+    }
 }
