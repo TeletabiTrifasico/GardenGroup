@@ -4,15 +4,18 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL;
 
 namespace GardenGroup.ViewModels
 {
     public sealed class MainViewModel : INotifyPropertyChanged
     {
+        protected MongoCRUD _crud;
         private object _currentView;
 
-        public MainViewModel()
+        public MainViewModel(MongoCRUD crud)
         {
+            _crud = crud;
             // Initialize with the Login view
             CurrentView = new LoginViewModel(this);
         }
@@ -30,7 +33,7 @@ namespace GardenGroup.ViewModels
         public void SwitchToDashboard()
         {
             // Switch to the Dashboard view
-            CurrentView = new DashboardViewModel();
+            CurrentView = new DashboardViewModel(_crud);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

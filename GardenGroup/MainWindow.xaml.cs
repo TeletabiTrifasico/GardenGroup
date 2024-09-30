@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DAL;
 using GardenGroup.Views;
 
 namespace GardenGroup
@@ -18,10 +19,10 @@ namespace GardenGroup
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MongoCRUD crud)
         {
+            DataContext = new ViewModels.MainViewModel(crud);
             InitializeComponent();
-            DataContext = new ViewModels.MainViewModel();
         }
     }
 }

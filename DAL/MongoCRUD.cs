@@ -10,13 +10,17 @@ namespace DAL
 {
     public class MongoCRUD
     {
-        private readonly MongoClient _client;
         private readonly IMongoDatabase _db;
 
         public MongoCRUD()
         {
-            _client = new MongoClient(ConfigurationManager.ConnectionStrings["GardenGroupDB"].ConnectionString);
-            _db = _client.GetDatabase(ConfigurationManager.ConnectionStrings["Collection"].ConnectionString);
+            var client = new MongoClient(ConfigurationManager.ConnectionStrings["GardenGroupDB"].ConnectionString);
+            _db = client.GetDatabase(ConfigurationManager.ConnectionStrings["Collection"].ConnectionString);
+        }
+
+        protected IMongoCollection<T> GetCollection<T>(string name)
+        {
+            return _db.GetCollection<T>(name);
         }
     }
 }
