@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DAL;
+using Service;
 
 namespace GardenGroup
 {
@@ -18,7 +18,7 @@ namespace GardenGroup
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddSingleton<MainWindow>();
-                    services.AddTransient<MongoCRUD>();
+                    services.AddTransient<IServiceManager, ServiceManager>();
                 }).Build();
         }
 

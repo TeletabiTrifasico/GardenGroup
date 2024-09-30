@@ -11,6 +11,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DAL;
 using GardenGroup.Views;
+using Service;
 
 namespace GardenGroup
 {
@@ -19,9 +20,9 @@ namespace GardenGroup
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(MongoCRUD crud)
+        public MainWindow(IServiceManager service)
         {
-            DataContext = new ViewModels.MainViewModel(crud);
+            DataContext = new ViewModels.MainViewModel(service);
             InitializeComponent();
         }
     }

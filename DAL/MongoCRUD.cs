@@ -5,12 +5,13 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model;
 
 namespace DAL
 {
     public class MongoCRUD
     {
-        private readonly IMongoDatabase _db;
+        protected readonly IMongoDatabase _db;
 
         public MongoCRUD()
         {
@@ -18,9 +19,7 @@ namespace DAL
             _db = client.GetDatabase(ConfigurationManager.ConnectionStrings["Collection"].ConnectionString);
         }
 
-        protected IMongoCollection<T> GetCollection<T>(string name)
-        {
-            return _db.GetCollection<T>(name);
-        }
+        protected IMongoCollection<T> GetCollection<T>(string name) =>
+            _db.GetCollection<T>(name);
     }
 }
