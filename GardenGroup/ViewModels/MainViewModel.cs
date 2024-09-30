@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL;
+﻿using System.ComponentModel;
+using GardenGroup.StartupHelpers;
 using Service;
 
 namespace GardenGroup.ViewModels
 {
     public sealed class MainViewModel : INotifyPropertyChanged
     {
-        public readonly IServiceManager _serviceManager;
+        private readonly IViewModelFactory _viewModelFactory;
+        private readonly IServiceManager _serviceManager;
         private object _currentView;
 
-        public MainViewModel(IServiceManager serviceManager)
+        public MainViewModel(IViewModelFactory viewModelFactory)
         {
-            _serviceManager = serviceManager;
+            _viewModelFactory = viewModelFactory;
+            //_serviceManager = serviceManager;
+            
             // Initialize with the Login view
-            CurrentView = new LoginViewModel(this);
+            //CurrentView = new LoginViewModel(this);
+            CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel, MainViewModel>(this);
         }
 
         public object CurrentView
@@ -34,7 +33,8 @@ namespace GardenGroup.ViewModels
         public void SwitchToDashboard()
         {
             // Switch to the Dashboard view
-            CurrentView = new DashboardViewModel(_serviceManager);
+            //CurrentView = new DashboardViewModel(_serviceManager);
+            CurrentView = _viewModelFactory.CreateViewModel<DashboardViewModel>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

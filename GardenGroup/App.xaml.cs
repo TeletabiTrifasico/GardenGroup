@@ -1,4 +1,7 @@
 ﻿using System.Windows;
+using GardenGroup.StartupHelpers;
+using GardenGroup.ViewModels;
+using GardenGroup.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Service;
@@ -18,6 +21,14 @@ namespace GardenGroup
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddSingleton<MainWindow>();
+                    services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+
+                    // Register all view models
+                    // Add new viewmodels here
+                    services.AddTransient<MainViewModel>();
+                    services.AddTransient<LoginViewModel>();
+                    services.AddTransient<DashboardViewModel>();
+                    
                     services.AddTransient<IServiceManager, ServiceManager>();
                 }).Build();
         }
