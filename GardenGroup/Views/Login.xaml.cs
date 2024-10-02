@@ -29,12 +29,6 @@ namespace GardenGroup.Views
         {
             var username = usernameTxt.Text;
             var password = passwordTxt.Password;
-
-            if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                errorLabel.Content = "Username or password is missing!";
-                errorLabel.Visibility = Visibility.Visible;
-            }
             
             // Add login using database
             if (((LoginViewModel)DataContext).ValidateLogin(username, password))

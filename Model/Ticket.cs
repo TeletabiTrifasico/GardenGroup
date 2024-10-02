@@ -7,6 +7,17 @@ namespace Model;
 [DataObject]
 public class Ticket
 {
+    public enum Priorities
+    {
+        Low,
+        Normal,
+        High,
+    }
+    public enum Statuses
+    {
+        Unresolved,
+        Solved,
+    }
     [BsonId]
     public Guid Id { get; set; }
     
@@ -22,9 +33,8 @@ public class Ticket
     [BsonElement("assigned")]
     public ObjectId Assigned { get; set; }
     
-    // Enum?
-    [BsonElement("priority")]
-    public string Priority { get; set; } = string.Empty;
+    // Enum? Yes
+    [BsonElement("priority")] public Priorities Priority;
     
     [BsonElement("deadline")]
     public DateTime Deadline { get; set; }
@@ -32,7 +42,6 @@ public class Ticket
     [BsonElement("description")]
     public string Description { get; set; } = string.Empty;
 
-    // Emum?
-    [BsonElement("status")]
-    private string Status { get; set; } = string.Empty;
+    // Emum? Yes
+    [BsonElement("status")] private Statuses Status;
 }
