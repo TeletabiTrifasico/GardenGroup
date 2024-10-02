@@ -11,15 +11,13 @@ namespace Model
 {
     public enum Privilieges
     {
-        Employee,
+        NormalUser,
         ServiceDesk,
     }
 
     [DataObject]
     public class Employee
     {
-        // Because of exceptions (some serialization issues with ObjectId)
-        // I used GUID 
         [BsonId]
         public Guid Id { get; set; }
         
@@ -29,15 +27,16 @@ namespace Model
         [BsonElement("last_name")]
         public string Lastname { get; set; } = string.Empty;
         
+        public string FullName => $"{Firstname} {Lastname}";
+        
         [BsonElement("email")]
         public string Email { get; set; } = string.Empty;
         
         [BsonElement("phone")]
         public string Phone { get; set; } = string.Empty;
         
-        // Enum? 
-        [BsonElement("user_type")]
-        public string UserType { get; set; } = string.Empty;
+        //Enum? Yes
+        [BsonElement("user_type")] public Privilieges UserType;
         
         [BsonElement("password")]
         public string Password { get; set; } = string.Empty;
