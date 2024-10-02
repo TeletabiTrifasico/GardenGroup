@@ -1,4 +1,5 @@
 ﻿using DAL;
+using Model;
 
 namespace Service;
 
@@ -10,6 +11,6 @@ public class EmployeeService
         _employeesDao = new EmployeesDao();
     }
 
-    public bool ValidateLogin(string username, string password) => 
-        _employeesDao.ValidateLogin(username, password);
+    public Employee Login(string username, string password) => 
+        _employeesDao.Login(username, password);
 }

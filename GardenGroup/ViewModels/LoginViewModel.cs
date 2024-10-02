@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Model;
 using Service;
 
 namespace GardenGroup.ViewModels
@@ -25,7 +26,10 @@ namespace GardenGroup.ViewModels
 
         private void OnLogin(object parameter) => _mainViewModel.SwitchToDashboard();
 
-        public bool ValidateLogin(string username, string password) =>
-            _serviceManager.EmployeeService.ValidateLogin(username, password);
+        public Employee Login(string username, string password) =>
+            _serviceManager.EmployeeService.Login(username, password);
+
+        public void SetLoggedInEmployee(Employee employee) => 
+            _mainViewModel.CurrentEmployee = employee;
     }
 }

@@ -11,6 +11,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DAL;
 using GardenGroup.StartupHelpers;
+using GardenGroup.ViewModels;
 using GardenGroup.Views;
 using Service;
 
@@ -26,5 +27,12 @@ namespace GardenGroup
             DataContext = new ViewModels.MainViewModel(viewModelFactory);
             InitializeComponent();
         }
+
+
+        private void ticketsBtn_Click(object sender, RoutedEventArgs e) =>
+            ((MainViewModel)DataContext).SwitchToTickets();
+
+        private void dashboardBtn_Click(object sender, RoutedEventArgs e) =>
+            ((MainViewModel)DataContext).SwitchToDashboard();
     }
 }
