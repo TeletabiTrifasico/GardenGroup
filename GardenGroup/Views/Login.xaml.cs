@@ -18,8 +18,7 @@ namespace GardenGroup.Views
             var password = passwordTxt.Password;
             
             var employee = ((LoginViewModel)DataContext).Login(username, password);
-
-            // Add login using database
+            
             if (employee != null)
             {
                 ((LoginViewModel)DataContext).SetLoggedInEmployee(employee);

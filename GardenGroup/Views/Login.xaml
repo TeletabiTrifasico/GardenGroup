@@ -93,8 +93,8 @@
                      Grid.Row="1" 
                      Width="150" Height="25"
                      Foreground="Gray"
-                     Background="#F1F1F1"
-                     BorderBrush="#F1F1F1"/>
+                     Background="#EBEBEB"
+                     BorderBrush="#EBEBEB"/>
         </Grid>
         
         <Grid Grid.Row="2" Width="150">
@@ -108,8 +108,8 @@
                      Grid.Row="1" 
                      Width="150" Height="25"
                      Foreground="Gray"
-                     Background="#F1F1F1"
-                     BorderBrush="#F1F1F1"/>
+                     Background="#EBEBEB"
+                     BorderBrush="#EBEBEB"/>
         </Grid>
 
         <Grid Grid.Row="3">
