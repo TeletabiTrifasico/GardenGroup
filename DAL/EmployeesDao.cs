@@ -6,15 +6,17 @@ namespace DAL;
 
 public class EmployeesDao : MongoCRUD
 {
-    public Employee Login(string username, string password) =>
-        GetCollection<Employee>("Employees")
-            .Find(x => x.Username == username && x.Password == password)
+    public Employee Login(string username, string password)
+    {
+        //searches employee by username
+        var employee = GetCollection<Employee>("Employees")
+            .Find(x => x.Username == username)
             .FirstOrDefault();
-    
-    // Change to this once passwords are encrypted
-    
-    /*public bool ValidateLogin(string username, string password) =>
-        GetCollection<Employee>("Employees")
-            .Find(x => x.Username == username && Encryption.Verify(password, x.Password))
-            .Any();*/
+        //verify the password
+        if (employee != null && BCrypt.Net.BCrypt.Verify(password, employee.Password))
+        {
+            return employee; //good login :)
+        }
+        return null; //bad login :(
+    }
 }
