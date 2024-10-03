@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using GardenGroup.ViewModels;
-using Service;
 
 namespace GardenGroup.Views
 {
@@ -30,17 +17,17 @@ namespace GardenGroup.Views
             var username = usernameTxt.Text;
             var password = passwordTxt.Password;
             
+            var employee = ((LoginViewModel)DataContext).Login(username, password);
+
             // Add login using database
-            if (((LoginViewModel)DataContext).ValidateLogin(username, password))
+            if (employee != null)
+            {
+                ((LoginViewModel)DataContext).SetLoggedInEmployee(employee);
                 ((LoginViewModel)DataContext).LoginCommand.Execute(this);
-            else if (password != "password" && username != "admin")
+            }
+            else
             {
                 errorLabel.Content = "Invalid username or password!";
-                errorLabel.Visibility = Visibility.Visible;
-            }
-            else if (password != "password")
-            {
-                errorLabel.Content = "Invalid password!";
                 errorLabel.Visibility = Visibility.Visible;
             }
         }
