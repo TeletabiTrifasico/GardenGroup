@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace GardenGroup.ViewModels
 {
-    public class TicketViewModel
+    public class TicketViewModel(IServiceManager service)
     {
-        public TicketViewModel(IServiceManager service, MainViewModel mainViewModel)
+        public IServiceManager ServiceManager
         {
-
+            get => service;
+            private set => value = service;
         }
     }
 }

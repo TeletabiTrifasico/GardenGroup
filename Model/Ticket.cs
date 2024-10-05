@@ -28,20 +28,22 @@ public class Ticket
     public string Subject { get; set; } = string.Empty;
     
     [BsonElement("incident_type")]
-    public string IncidentType { get; set; } = string.Empty;
+    public int IncidentType { get; set; }
     
     [BsonElement("assigned")]
-    public ObjectId Assigned { get; set; }
+    public Guid Assigned { get; set; }
     
-    // Enum? Yes
-    [BsonElement("priority")] public Priorities Priority;
+    [BsonElement("priority")] 
+    [BsonRepresentation(BsonType.String)]
+    public Priorities Priority;
     
     [BsonElement("deadline")]
     public DateTime Deadline { get; set; }
     
     [BsonElement("description")]
     public string Description { get; set; } = string.Empty;
-
-    // Emum? Yes
-    [BsonElement("status")] private Statuses Status;
+    
+    [BsonElement("status")] 
+    [BsonRepresentation(BsonType.String)]
+    private Statuses Status;
 }

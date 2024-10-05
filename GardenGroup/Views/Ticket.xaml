@@ -5,10 +5,35 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GardenGroup.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="auto"
+             Margin="10">
     <Grid>
-        <Label FontSize="40">
-            Tickets
-        </Label>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0"
+              VerticalAlignment="Center">
+            <Label FontSize="18">
+                Service Employee Tickets
+            </Label>
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <ListView x:Name="ticketsList">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Employee" Width="120" DisplayMemberBinding="{Binding FullName}"/>
+                        <GridViewColumn Header="Subject" Width="150" DisplayMemberBinding="{Binding Subject}"/>
+                        <GridViewColumn Header="Incident Type" Width="100" DisplayMemberBinding="{Binding IncidentType}"/>
+                        <GridViewColumn Header="Assigned To" Width="120" DisplayMemberBinding="{Binding AssignedTo}"/>
+                        <GridViewColumn Header="Reportation Date" Width="120" DisplayMemberBinding="{Binding DateReported}"/>
+                        <GridViewColumn Header="Priority" Width="100" DisplayMemberBinding="{Binding Priority}"/>
+                        <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
 </UserControl>

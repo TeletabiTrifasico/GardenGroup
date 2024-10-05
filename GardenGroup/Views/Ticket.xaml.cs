@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GardenGroup.ViewModels;
 
 namespace GardenGroup.Views
 {
@@ -20,9 +21,22 @@ namespace GardenGroup.Views
     /// </summary>
     public partial class Ticket : UserControl
     {
+        
+        private TicketViewModel ViewModel => DataContext as TicketViewModel ?? throw new NullReferenceException();
+        
         public Ticket()
         {
+            Loaded += (s, e) => AddTicketsToList();
+            
             InitializeComponent();
+        }
+
+        private void AddTicketsToList()
+        {
+            var data = ViewModel.ServiceManager.TicketService.GetAllEmployeesTicketsAsync();
+            
+            ticketsList.Items.Clear();
+            ticketsList.ItemsSource = data;
         }
     }
 }

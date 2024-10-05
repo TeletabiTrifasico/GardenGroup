@@ -11,6 +11,7 @@
         Title="Garden Group" 
         Height="720" Width="1280"
         MinHeight="720" MinWidth="1280"
+        MaxHeight="720" MaxWidth="1280"
         SizeToContent="WidthAndHeight">
 
     <!--- Insert your view here! Use the same pattern -->
