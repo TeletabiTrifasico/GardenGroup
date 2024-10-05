@@ -13,11 +13,15 @@ public class Ticket
         Normal,
         High,
     }
+
     public enum Statuses
     {
-        Unresolved,
-        Solved,
+        Open,
+        InProgress,
+        Resolved,
+        Closed,
     }
+
     [BsonId]
     public Guid Id { get; set; }
     

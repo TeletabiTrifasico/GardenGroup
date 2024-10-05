@@ -30,6 +30,10 @@
         <DataTemplate DataType="{x:Type models:TicketViewModel}">
             <views:Ticket/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type models:EmployeeTicketsViewModel}">
+            <views:EmployeeTickets />
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid Height="720"

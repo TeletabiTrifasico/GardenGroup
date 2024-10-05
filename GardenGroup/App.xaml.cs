@@ -29,6 +29,7 @@ namespace GardenGroup
                     services.AddTransient<LoginViewModel>();
                     services.AddTransient<DashboardViewModel>();
                     services.AddTransient<TicketViewModel>();
+                    services.AddTransient<EmployeeTicketsViewModel>();
                     
                     services.AddTransient<IServiceManager, ServiceManager>();
                 }).Build();

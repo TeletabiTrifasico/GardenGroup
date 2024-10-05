@@ -8,6 +8,8 @@ public class EmployeeTicket
     public string AssignedTo { get; set; }
     
     public DateTime DateReported { get; set; }
+    public string ParsedDateReported => DateReported.ToString("dd/MM/yyyy HH:mm");
+
     public Ticket.Priorities Priority { get; set; }
     public Ticket.Statuses Status { get; set; }
 }

@@ -5,9 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GardenGroup.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="auto"
-             Margin="10">
-    <Grid>
+             d:DesignHeight="450" d:DesignWidth="900">
+    <Grid Margin="50,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
@@ -15,7 +14,7 @@
         
         <Grid Grid.Row="0"
               VerticalAlignment="Center">
-            <Label FontSize="18">
+            <Label FontSize="25">
                 Service Employee Tickets
             </Label>
         </Grid>
@@ -28,7 +27,7 @@
                         <GridViewColumn Header="Subject" Width="150" DisplayMemberBinding="{Binding Subject}"/>
                         <GridViewColumn Header="Incident Type" Width="100" DisplayMemberBinding="{Binding IncidentType}"/>
                         <GridViewColumn Header="Assigned To" Width="120" DisplayMemberBinding="{Binding AssignedTo}"/>
-                        <GridViewColumn Header="Reportation Date" Width="120" DisplayMemberBinding="{Binding DateReported}"/>
+                        <GridViewColumn Header="Reportation Date" Width="120" DisplayMemberBinding="{Binding ParsedDateReported}"/>
                         <GridViewColumn Header="Priority" Width="100" DisplayMemberBinding="{Binding Priority}"/>
                         <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
                     </GridView>

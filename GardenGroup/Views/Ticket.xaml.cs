@@ -34,6 +34,7 @@ namespace GardenGroup.Views
         private void AddTicketsToList()
         {
             var data = ViewModel.ServiceManager.TicketService.GetAllEmployeesTicketsAsync();
+            data = data.OrderByDescending(x => x.Status == Model.Ticket.Statuses.Open).ToList();
             
             ticketsList.Items.Clear();
             ticketsList.ItemsSource = data;
