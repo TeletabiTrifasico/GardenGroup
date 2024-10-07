@@ -15,16 +15,8 @@ public class Ticket
     }
     public enum Statuses
     {
-        Open,
-        InProgress,
-        Closed,
-    }
-
-    public enum Types
-    {
-        Hardware,
-        Software,
-        Network,
+        Unresolved,
+        Solved,
     }
     [BsonId]
     public Guid Id { get; set; }
@@ -35,11 +27,13 @@ public class Ticket
     [BsonElement("subject")]
     public string Subject { get; set; } = string.Empty;
     
-    [BsonElement("incident_type")] public Types IncidentType;
+    [BsonElement("incident_type")]
+    public string IncidentType { get; set; } = string.Empty;
     
     [BsonElement("assigned")]
     public ObjectId Assigned { get; set; }
     
+    // Enum? Yes
     [BsonElement("priority")] public Priorities Priority;
     
     [BsonElement("deadline")]
@@ -47,6 +41,7 @@ public class Ticket
     
     [BsonElement("description")]
     public string Description { get; set; } = string.Empty;
-    
-    [BsonElement("status")] public Statuses Status;
+
+    // Emum? Yes
+    [BsonElement("status")] private Statuses Status;
 }

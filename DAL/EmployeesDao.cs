@@ -19,4 +19,9 @@ public class EmployeesDao : MongoCRUD
         }
         return null; //bad login :(
     }
+    
+    public List<Employee> GetEmployees() => 
+        GetCollection<Employee>("Employees")
+            .AsQueryable()
+            .ToList();
 }

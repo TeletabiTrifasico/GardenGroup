@@ -35,8 +35,8 @@ namespace Model
         [BsonElement("phone")]
         public string Phone { get; set; } = string.Empty;
         
-        //Enum? Yes
-        [BsonElement("user_type")] public Privilieges UserType;
+        [BsonElement("user_type")] 
+        public Privilieges UserType;
         
         [BsonElement("password")]
         public string Password { get; set; } = string.Empty;
