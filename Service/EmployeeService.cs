@@ -13,4 +13,7 @@ public class EmployeeService
 
     public Employee Login(string username, string password) => 
         _employeesDao.Login(username, password);
+    
+    public List<Employee> GetEmployees() => 
+        _employeesDao.GetEmployees();
 }

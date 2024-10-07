@@ -13,6 +13,7 @@ public class Ticket
         Normal,
         High,
     }
+
     public enum Statuses
     {
         Open,
@@ -26,6 +27,7 @@ public class Ticket
         Software,
         Network,
     }
+
     [BsonId]
     public Guid Id { get; set; }
     
@@ -35,12 +37,18 @@ public class Ticket
     [BsonElement("subject")]
     public string Subject { get; set; } = string.Empty;
     
-    [BsonElement("incident_type")] public Types IncidentType;
+    [BsonElement("incident_type")]
+    [BsonRepresentation(BsonType.String)]
+    public Types IncidentType;
+
     
     [BsonElement("assigned")]
-    public ObjectId Assigned { get; set; }
+    public Guid Assigned { get; set; }
     
-    [BsonElement("priority")] public Priorities Priority;
+    [BsonElement("priority")] 
+    [BsonRepresentation(BsonType.String)]
+    public Priorities Priority;
+
     
     [BsonElement("deadline")]
     public DateTime Deadline { get; set; }
@@ -48,5 +56,7 @@ public class Ticket
     [BsonElement("description")]
     public string Description { get; set; } = string.Empty;
     
-    [BsonElement("status")] public Statuses Status;
+    [BsonElement("status")] 
+    [BsonRepresentation(BsonType.String)]
+    private Statuses Status;
 }
