@@ -21,6 +21,7 @@ namespace GardenGroup.ViewModels
             IsSidebarVisible = false;
 
             CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel, MainViewModel>(this);
+            //CurrentView = _viewModelFactory.CreateViewModelWithParameter<TicketLookupViewModel, Guid>(new Guid());
         }
 
         public object CurrentView
