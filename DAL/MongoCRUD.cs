@@ -11,7 +11,7 @@ namespace DAL
 {
     public class MongoCRUD
     {
-        private readonly IMongoDatabase _db;
+        protected readonly IMongoDatabase _db;
 
         protected MongoCRUD()
         {
@@ -21,5 +21,7 @@ namespace DAL
 
         protected IMongoCollection<T> GetCollection<T>(string name) =>
             _db.GetCollection<T>(name);
+
+        protected FilterDefinition<T> FilterEq<T, TParam>(string field, TParam value) => Builders<T>.Filter.Eq(field, value);
     }
 }

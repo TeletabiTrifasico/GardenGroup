@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using GardenGroup.ViewModels;
+using GardenGroup.Views.Windows;
 using Model;
 
 namespace GardenGroup.Views
@@ -30,7 +31,6 @@ namespace GardenGroup.Views
 
         private void UpdateTicketList()
         {
-            
             var data = _tickets;
             data = data.OrderByDescending(x => x.Status == Model.Ticket.Statuses.Open).ToList();
 
@@ -50,7 +50,7 @@ namespace GardenGroup.Views
             if (!string.IsNullOrEmpty(EmployeeTxt.Text))
                 data = data.OrderByDescending(x => x.FullName.Contains(EmployeeTxt.Text, StringComparison.OrdinalIgnoreCase)).ToList();
             
-            ticketsList.ItemsSource = data;
+            TicketsList.ItemsSource = data;
         }
 
         private void InitComboxItem()
@@ -67,5 +67,15 @@ namespace GardenGroup.Views
         private void EmployeeTxt_OnTextChanged(object sender, TextChangedEventArgs e) => UpdateTicketList();
 
         private void StatusBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateTicketList();
+
+        private void TicketsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selected = TicketsList.SelectedItem as EmployeeTicket;
+            if (selected == null)
+                return;
+            
+            var lookup = new LookupTicket(ViewModel.ServiceManager, selected.Id);
+            lookup.Show();
+        }
     }
 }

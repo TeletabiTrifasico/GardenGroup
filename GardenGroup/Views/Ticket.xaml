@@ -19,7 +19,9 @@
             </Label>
         </Grid>
         <Grid Grid.Row="1">
-            <ListView x:Name="ticketsList">
+            <ListView x:Name="TicketsList"
+                      SelectionChanged="TicketsList_OnSelectionChanged"
+                      SelectionMode="Single">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Width="120" DisplayMemberBinding="{Binding FullName}">

@@ -58,5 +58,5 @@ public class Ticket
     
     [BsonElement("status")] 
     [BsonRepresentation(BsonType.String)]
-    private Statuses Status;
+    public Statuses Status;
 }
