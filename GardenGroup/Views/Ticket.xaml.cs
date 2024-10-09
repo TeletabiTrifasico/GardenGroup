@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 using GardenGroup.ViewModels;
+using Model;
 
 namespace GardenGroup.Views
 {
@@ -23,21 +11,61 @@ namespace GardenGroup.Views
     {
         
         private TicketViewModel ViewModel => DataContext as TicketViewModel ?? throw new NullReferenceException();
+        private List<Model.EmployeeTicket> _tickets;
         
         public Ticket()
         {
-            Loaded += (s, e) => AddTicketsToList();
+            Loaded += (s, e) => GetData();
             
             InitializeComponent();
         }
 
-        private void AddTicketsToList()
+        private void GetData()
         {
-            var data = ViewModel.ServiceManager.TicketService.GetAllEmployeesTicketsAsync();
-            data = data.OrderByDescending(x => x.Status == Model.Ticket.Statuses.Open).ToList();
+            _tickets = ViewModel.ServiceManager.TicketService.GetAllEmployeesTicketsAsync();
+            InitComboxItem();
             
-            ticketsList.Items.Clear();
+            UpdateTicketList();
+        }
+
+        private void UpdateTicketList()
+        {
+            
+            var data = _tickets;
+            data = data.OrderByDescending(x => x.Status == Model.Ticket.Statuses.Open).ToList();
+
+            try
+            {
+                var parsed = Enum.TryParse<Model.Ticket.Statuses>(StatusBox.SelectedValue.ToString(), out var status);
+                if (parsed)
+                    data = data.OrderByDescending(x => x.Status == status).ToList();
+
+                parsed = Enum.TryParse<Model.Ticket.Priorities>(PriorityBox.SelectedValue.ToString(), out var priority);
+                if (parsed)
+                    data = data.OrderByDescending(x => x.Priority == priority).ToList();
+            }
+            catch (NullReferenceException)
+            { }
+            
+            if (!string.IsNullOrEmpty(EmployeeTxt.Text))
+                data = data.OrderByDescending(x => x.FullName.Contains(EmployeeTxt.Text, StringComparison.OrdinalIgnoreCase)).ToList();
+            
             ticketsList.ItemsSource = data;
         }
+
+        private void InitComboxItem()
+        {
+            StatusBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Statuses));
+            StatusBox.SelectedIndex = 0;
+            
+            PriorityBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Priorities));
+            PriorityBox.SelectedIndex = 0;
+        }
+
+        private void PriorityBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateTicketList();
+
+        private void EmployeeTxt_OnTextChanged(object sender, TextChangedEventArgs e) => UpdateTicketList();
+
+        private void StatusBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateTicketList();
     }
 }

@@ -54,7 +54,7 @@ public class TicketsDao : MongoCRUD
             {
                 FullName = bsonDoc["FullName"].AsString,
                 Subject = bsonDoc["Subject"].AsString,
-                IncidentType = bsonDoc["IncidentType"].AsInt32,
+                IncidentType = (Ticket.Types)bsonDoc["IncidentType"].AsInt32,
                 AssignedTo = bsonDoc["AssignedTo"].AsString,
                 DateReported = bsonDoc["DateReported"].AsDateTime,
                 Priority = (Ticket.Priorities)bsonDoc["Priority"].AsInt32,

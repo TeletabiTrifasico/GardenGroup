@@ -18,18 +18,29 @@
                 Service Employee Tickets
             </Label>
         </Grid>
-        
         <Grid Grid.Row="1">
             <ListView x:Name="ticketsList">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Employee" Width="120" DisplayMemberBinding="{Binding FullName}"/>
+                        <GridViewColumn Width="120" DisplayMemberBinding="{Binding FullName}">
+                            <TextBox x:Name="EmployeeTxt"
+                                     Width="115"
+                                     TextChanged="EmployeeTxt_OnTextChanged"/>
+                        </GridViewColumn>
                         <GridViewColumn Header="Subject" Width="150" DisplayMemberBinding="{Binding Subject}"/>
                         <GridViewColumn Header="Incident Type" Width="100" DisplayMemberBinding="{Binding IncidentType}"/>
                         <GridViewColumn Header="Assigned To" Width="120" DisplayMemberBinding="{Binding AssignedTo}"/>
                         <GridViewColumn Header="Reportation Date" Width="120" DisplayMemberBinding="{Binding ParsedDateReported}"/>
-                        <GridViewColumn Header="Priority" Width="100" DisplayMemberBinding="{Binding Priority}"/>
-                        <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding Status}"/>
+                        <GridViewColumn Width="100" DisplayMemberBinding="{Binding Priority}">
+                            <ComboBox x:Name="PriorityBox"
+                                      Width="90"
+                                      SelectionChanged="PriorityBox_OnSelectionChanged"/> 
+                        </GridViewColumn>
+                        <GridViewColumn Width="100" DisplayMemberBinding="{Binding Status}">
+                            <ComboBox x:Name="StatusBox"
+                                      Width="90"
+                                      SelectionChanged="StatusBox_OnSelectionChanged"/>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="GardenGroup.Views.TicketLookup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:GardenGroup.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="900">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              VerticalAlignment="Center">
+            <Label FontSize="25"
+                   Content="{Binding Subject}"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Label FontSize="18"
+                   Content="{Binding Priority}"/>
+            <Label FontSize="18"
+                   Content="{Binding Status}"/>
+        </Grid>
+        <Grid Grid.Row="2"
+              HorizontalAlignment="Center">
+            <TextBox></TextBox>
+        </Grid>
+    </Grid>
+</UserControl>

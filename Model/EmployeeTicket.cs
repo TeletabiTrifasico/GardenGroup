@@ -4,7 +4,7 @@ public class EmployeeTicket
 {
     public string FullName { get; set; }
     public string Subject { get; set; }
-    public int IncidentType { get; set; }
+    public Ticket.Types IncidentType { get; set; }
     public string AssignedTo { get; set; }
     
     public DateTime DateReported { get; set; }
