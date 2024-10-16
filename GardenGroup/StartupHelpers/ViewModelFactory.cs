@@ -41,4 +41,17 @@ public class ViewModelFactory(IServiceProvider serviceProvider) : IViewModelFact
         // Invoke new view with parameterss
         return (T)constructorInfo.Invoke([serviceManager, parameter]);
     }
+    
+    public T CreateViewModelWithParameter<T, TParameter>(TParameter parameter) where T : class
+    {
+        var serviceManager = serviceProvider.GetRequiredService<IServiceManager>();
+        
+        // Check if parameters handled by a constructor or of a type IServiceManager and MainViewModel
+        var constructorInfo = typeof(T).GetConstructor([typeof(IServiceManager), typeof(TParameter)]);
+        if(constructorInfo == null)
+            throw new MissingMethodException($"Constructor on type '{typeof(T).Name}' not found.");
+        
+        // Invoke new view with parameterss
+        return (T)constructorInfo.Invoke([serviceManager, parameter]);
+    }
 }
