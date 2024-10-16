@@ -53,7 +53,7 @@ public class TicketsDao : MongoCRUD
         {
             employeeTicketList.Add(new EmployeeTicket
             {
-                Id = bsonDoc["_id"].AsGuid,
+                Id = bsonDoc["_id"].AsObjectId,
                 FullName = bsonDoc["FullName"].AsString,
                 Subject = bsonDoc["Subject"].AsString,
                 IncidentType = (Ticket.Types)bsonDoc["IncidentType"].AsInt32,
@@ -67,7 +67,7 @@ public class TicketsDao : MongoCRUD
         return employeeTicketList;
     }
 
-    public Ticket GetTicketByIdAsync(Guid id)
+    public Ticket GetTicketByIdAsync(ObjectId id)
     {
         var ticket = GetCollection<Ticket>("Tickets").AsQueryable().ToList().Find(x => x.Id.Equals(id));
         return ticket;

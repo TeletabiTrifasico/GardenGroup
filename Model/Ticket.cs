@@ -42,7 +42,7 @@ public class Ticket
 
     
     [BsonElement("assigned")]
-    public Guid Assigned { get; set; }
+    public ObjectId Assigned { get; set; }
     
     [BsonElement("priority")] 
     [BsonRepresentation(BsonType.String)]

@@ -1,8 +1,10 @@
-﻿namespace Model;
+﻿using MongoDB.Bson;
+
+namespace Model;
 
 public class EmployeeTicket
 {
-    public Guid Id { get; set; }
+    public ObjectId Id { get; set; }
     public string FullName { get; set; }
     public string Subject { get; set; }
     public Ticket.Types IncidentType { get; set; }

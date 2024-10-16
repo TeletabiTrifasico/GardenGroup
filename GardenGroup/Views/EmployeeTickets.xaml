@@ -6,7 +6,46 @@
              xmlns:local="clr-namespace:GardenGroup.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Label FontSize="20">Normal employee tickets</Label>
+    <Grid Margin="50,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0"
+              VerticalAlignment="Center">
+            <Label FontSize="25">
+                Employee Tickets
+            </Label>
+        </Grid>
+        <Grid Grid.Row="1">
+            <ListView x:Name="TicketsList"
+                      SelectionChanged="TicketsList_OnSelectionChanged"
+                      SelectionMode="Single">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="120" DisplayMemberBinding="{Binding FullName}">
+                            <TextBox x:Name="EmployeeTxt"
+                                     Width="115"
+                                     TextChanged="EmployeeTxt_OnTextChanged"/>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Subject" Width="150" DisplayMemberBinding="{Binding Subject}"/>
+                        <GridViewColumn Header="Incident Type" Width="100" DisplayMemberBinding="{Binding IncidentType}"/>
+                        <GridViewColumn Header="Assigned To" Width="120" DisplayMemberBinding="{Binding AssignedTo}"/>
+                        <GridViewColumn Header="Reportation Date" Width="120" DisplayMemberBinding="{Binding ParsedDateReported}"/>
+                        <GridViewColumn Width="100" DisplayMemberBinding="{Binding Priority}">
+                            <ComboBox x:Name="PriorityBox"
+                                      Width="90"
+                                      SelectionChanged="PriorityBox_OnSelectionChanged"/> 
+                        </GridViewColumn>
+                        <GridViewColumn Width="100" DisplayMemberBinding="{Binding Status}">
+                            <ComboBox x:Name="StatusBox"
+                                      Width="90"
+                                      SelectionChanged="StatusBox_OnSelectionChanged"/>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </Grid>
 </UserControl>
