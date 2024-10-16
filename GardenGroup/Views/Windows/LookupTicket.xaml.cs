@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using MongoDB.Bson;
 using Service;
 
 namespace GardenGroup.Views.Windows;
@@ -8,7 +9,7 @@ public partial class LookupTicket : Window
 {
     private IServiceManager _serviceManager;
     private Model.Ticket _ticket;
-    public LookupTicket(IServiceManager serviceManager, Guid ticketId)
+    public LookupTicket(IServiceManager serviceManager, ObjectId ticketId)
     {
         _serviceManager = serviceManager;
         Loaded += (s, e) => LoadTicket(ticketId); 
@@ -16,7 +17,7 @@ public partial class LookupTicket : Window
         InitializeComponent();
     }
 
-    private void LoadTicket(Guid ticketId)
+    private void LoadTicket(ObjectId ticketId)
     {
         try
         {
