@@ -11,4 +11,8 @@ public class TicketService
     public List<Ticket> GetAllTickets() => _ticketsDao.GetAllTickets();
 
     public List<EmployeeTicket> GetAllEmployeesTicketsAsync() => _ticketsDao.GetEmployeesTickets();
+    
+    public Ticket GetTicketById(Guid ticketId) => _ticketsDao.GetTicketByIdAsync(ticketId);
+    
+    public void UpdateTicket(Ticket ticket) => _ticketsDao.UpdateTicket(ticket);
 }
