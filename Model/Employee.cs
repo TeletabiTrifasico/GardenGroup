@@ -18,8 +18,7 @@ namespace Model
     [DataObject]
     public class Employee
     {
-        [BsonId]
-        public Guid Id { get; set; }
+        public ObjectId Id { get; set; }
         
         [BsonElement("first_name")]
         public string Firstname { get; set; } = string.Empty;

@@ -69,7 +69,7 @@ public class TicketsDao : MongoCRUD
 
     public Ticket GetTicketByIdAsync(Guid id)
     {
-        var ticket = GetCollection<Ticket>("Tickets").AsQueryable().ToList().Find(x => x.Id == id);
+        var ticket = GetCollection<Ticket>("Tickets").AsQueryable().ToList().Find(x => x.Id.Equals(id));
         return ticket;
     }
 

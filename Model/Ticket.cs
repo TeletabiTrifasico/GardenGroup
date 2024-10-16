@@ -28,8 +28,7 @@ public class Ticket
         Network,
     }
 
-    [BsonId]
-    public Guid Id { get; set; }
+    public ObjectId Id { get; set; }
     
     [BsonElement("date_reported")]
     public DateTime DateReported { get; set; }
