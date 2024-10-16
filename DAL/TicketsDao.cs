@@ -88,5 +88,105 @@ public class TicketsDao : MongoCRUD
         }
 
         //var update = GetCollection<Ticket>("Tickets").UpdateOne(x => x.Id == , filter);
+    public Dictionary<string, double> GetTicketStatusPercentage()
+    {
+        var collection = GetCollection<Ticket>("Tickets");
+        var totalTickets = collection.CountDocuments(FilterDefinition<Ticket>.Empty);
+
+        if (totalTickets == 0) return new Dictionary<string, double>();
+
+        var statusCounts = collection.Aggregate()
+            .Group(ticket => ticket.Status, g => new
+            {
+                Status = g.Key,
+                Count = g.Count()
+            })
+            .ToList();
+
+        return statusCounts.ToDictionary(
+            s => ((Ticket.Statuses)s.Status).ToString(),
+            s => (s.Count / (double)totalTickets) * 100);
+    }
+    public int GetOverdueTaskCount()
+    {
+        var today = DateTime.Now;
+        var collection = GetCollection<Ticket>("Tickets");
+        return (int)collection.CountDocuments(ticket => ticket.Deadline < today && ticket.Status == Ticket.Statuses.Open);
+    }
+    public int GetTicketsDueTodayCount()
+    {
+        var todayStart = DateTime.Now.Date; // Start of today (00:00:00)
+        var todayEnd = todayStart.AddDays(1).AddTicks(-1); // End of today (23:59:59)
+
+        var collection = GetCollection<Ticket>("Tickets");
+        return (int)collection.CountDocuments(ticket => ticket.Deadline >= todayStart && ticket.Deadline <= todayEnd && ticket.Status == Ticket.Statuses.Open);
+    }
+
+
+    public int GetOpenTicketCount()
+    {
+        var collection = GetCollection<Ticket>("Tickets");
+        return (int)collection.CountDocuments(ticket => ticket.Status == Ticket.Statuses.Open);
+    }
+
+    public int GetTicketsOnHoldCount()
+    {
+        var collection = GetCollection<Ticket>("Tickets");
+        return (int)collection.CountDocuments(ticket => ticket.Status == Ticket.Statuses.Closed);
+    }
+
+    public int GetAllTicketCount()
+    {
+        var collection = GetCollection<Ticket>("Tickets");
+        return (int)collection.CountDocuments(FilterDefinition<Ticket>.Empty);
+    }
+
+    public int GetTicketsDueTomorrowCount()
+    {
+        var tomorrowStart = DateTime.Now.Date.AddDays(1);
+        var tomorrowEnd = tomorrowStart.AddDays(1).AddTicks(-1); // End of tomorrow (23:59:59)
+
+        var collection = GetCollection<Ticket>("Tickets");
+        return (int)collection.CountDocuments(ticket => ticket.Deadline >= tomorrowStart && ticket.Deadline <= tomorrowEnd && ticket.Status == Ticket.Statuses.Open);
+    }
+
+    public int GetTicketsDueThisMonthCount()
+    {
+        var today = DateTime.Now.Date;
+        var endOfMonth = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month)).AddTicks(-1); // End of the month (23:59:59)
+
+        var collection = GetCollection<Ticket>("Tickets");
+        return (int)collection.CountDocuments(ticket => ticket.Deadline >= today && ticket.Deadline <= endOfMonth && ticket.Status == Ticket.Statuses.Open);
+    }
+
+    public int GetTicketsDueMoreThanMonthCount()
+    {
+        var nextMonthStart = DateTime.Now.Date.AddMonths(1);
+        var nextMonthEnd = nextMonthStart.AddMonths(1).AddTicks(-1); // End of next month
+
+        var collection = GetCollection<Ticket>("Tickets");
+        return (int)collection.CountDocuments(ticket => ticket.Deadline > nextMonthEnd && ticket.Status == Ticket.Statuses.Open);
+    }
+
+
+    public Dictionary<string, double> GetUnresolvedTicketsByPriority()
+    {
+        var collection = GetCollection<Ticket>("Tickets");
+        var totalUnresolvedTickets = collection.CountDocuments(ticket => ticket.Status == Ticket.Statuses.Open || ticket.Status == Ticket.Statuses.InProgress);
+
+        if (totalUnresolvedTickets == 0) return new Dictionary<string, double>();
+
+        var priorityCounts = collection.Aggregate()
+            .Match(ticket => ticket.Status == Ticket.Statuses.Open || ticket.Status == Ticket.Statuses.InProgress)
+            .Group(ticket => ticket.Priority, g => new
+            {
+                Priority = g.Key,
+                Count = g.Count()
+            })
+            .ToList();
+
+        return priorityCounts.ToDictionary(
+            p => ((Ticket.Priorities)p.Priority).ToString(),
+            p => (p.Count / (double)totalUnresolvedTickets) * 100);
     }
 }

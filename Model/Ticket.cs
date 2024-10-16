@@ -56,6 +56,8 @@ public class Ticket
     public string Description { get; set; } = string.Empty;
     
     [BsonElement("status")] 
-    [BsonRepresentation(BsonType.String)]
+
+  [BsonRepresentation(BsonType.String)]
     public Statuses Status;
+
 }
