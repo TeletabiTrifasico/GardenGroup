@@ -18,12 +18,17 @@ public class Ticket
     {
         Open,
         InProgress,
-        Resolved,
         Closed,
     }
 
-    [BsonId]
-    public Guid Id { get; set; }
+    public enum Types
+    {
+        Hardware,
+        Software,
+        Network,
+    }
+
+    public ObjectId Id { get; set; }
     
     [BsonElement("date_reported")]
     public DateTime DateReported { get; set; }
@@ -32,7 +37,9 @@ public class Ticket
     public string Subject { get; set; } = string.Empty;
     
     [BsonElement("incident_type")]
-    public int IncidentType { get; set; }
+    [BsonRepresentation(BsonType.String)]
+    public Types IncidentType;
+
     
     [BsonElement("assigned")]
     public Guid Assigned { get; set; }
@@ -40,6 +47,7 @@ public class Ticket
     [BsonElement("priority")] 
     [BsonRepresentation(BsonType.String)]
     public Priorities Priority;
+
     
     [BsonElement("deadline")]
     public DateTime Deadline { get; set; }
