@@ -10,10 +10,8 @@ public class TicketService
     public TicketService() => _ticketsDao = new TicketsDao();
     
     public List<Ticket> GetAllTickets() => _ticketsDao.GetAllTickets();
-
-    public List<EmployeeTicket> GetAllEmployeesTicketsAsync() => _ticketsDao.GetEmployeesTickets();
     
-    public Ticket GetTicketById(ObjectId ticketId) => _ticketsDao.GetTicketByIdAsync(ticketId);
+    public Ticket GetTicketById(ObjectId ticketId) => _ticketsDao.GetTicketById(ticketId);
     
     public void UpdateTicket(Ticket ticket) => _ticketsDao.UpdateTicket(ticket);
 }

@@ -97,9 +97,7 @@ namespace GardenGroup.ViewModels
         public void SwitchToDashboard() => CurrentView = _viewModelFactory.CreateViewModel<DashboardViewModel>();
 
         public void SwitchToTickets() =>
-            CurrentView = CurrentEmployee.UserType == Privilieges.ServiceDesk ?
-            _viewModelFactory.CreateViewModel<TicketViewModel>() :
-            _viewModelFactory.CreateViewModel<EmployeeTicketsViewModel>();
+            CurrentView = _viewModelFactory.CreateViewModel<TicketViewModel>();
 
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using GardenGroup.ViewModels;
 using GardenGroup.Views.Windows;
 using Model;
@@ -6,13 +7,14 @@ using Model;
 namespace GardenGroup.Views
 {
     /// <summary>
-    /// Interaction logic for Ticket.xaml
+    /// Interaction logic for Ticket.xaml.
+    /// Used by service employees
     /// </summary>
     public partial class Ticket : UserControl
     {
         
         private TicketViewModel ViewModel => DataContext as TicketViewModel ?? throw new NullReferenceException();
-        private List<Model.EmployeeTicket> _tickets;
+        private List<Model.Ticket> _tickets;
         
         public Ticket()
         {
@@ -23,7 +25,7 @@ namespace GardenGroup.Views
 
         private void GetData()
         {
-            _tickets = ViewModel.ServiceManager.TicketService.GetAllEmployeesTicketsAsync();
+            _tickets = ViewModel.ServiceManager.TicketService.GetAllTickets();
             InitComboxItem();
             
             UpdateTicketList();
@@ -48,8 +50,8 @@ namespace GardenGroup.Views
             { }
             
             if (!string.IsNullOrEmpty(EmployeeTxt.Text))
-                data = data.OrderByDescending(x => x.FullName.Contains(EmployeeTxt.Text, StringComparison.OrdinalIgnoreCase)).ToList();
-            
+                data = data.OrderByDescending(x => x.AssignedEmployee.FullName.Contains(EmployeeTxt.Text, StringComparison.OrdinalIgnoreCase)).ToList();
+
             TicketsList.ItemsSource = data;
         }
 
@@ -57,7 +59,6 @@ namespace GardenGroup.Views
         {
             StatusBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Statuses));
             StatusBox.SelectedIndex = 0;
-            
             PriorityBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Priorities));
             PriorityBox.SelectedIndex = 0;
         }
@@ -70,8 +71,7 @@ namespace GardenGroup.Views
 
         private void TicketsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selected = TicketsList.SelectedItem as EmployeeTicket;
-            if (selected == null)
+            if (TicketsList.SelectedItem is not Model.Ticket selected)
                 return;
             
             var lookup = new LookupTicket(ViewModel.ServiceManager, selected.Id);
