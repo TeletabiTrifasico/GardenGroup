@@ -67,7 +67,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="70"/>
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="90"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
@@ -101,15 +101,19 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="25"/>
+                <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
-            <Label Grid.Row="0" Margin="0,15,0,0" FontWeight="Bold" Foreground="DarkGray">Password</Label>
+            <Label Grid.Row="0" Margin="0,10,0,0" FontWeight="Bold" Foreground="DarkGray">Password</Label>
             <PasswordBox x:Name="passwordTxt"
                      Grid.Row="1" 
                      Width="150" Height="25"
                      Foreground="Gray"
                      Background="#EBEBEB"
                      BorderBrush="#EBEBEB"/>
+            <Label Grid.Row="2" 
+                   FontSize="12" Foreground="Blue"
+                   MouseDoubleClick="Control_OnMouseDoubleClick">Forgot password?</Label>
         </Grid>
 
         <Grid Grid.Row="3">

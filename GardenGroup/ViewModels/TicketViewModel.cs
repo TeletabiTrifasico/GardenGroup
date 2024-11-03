@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GardenGroup.ViewModels
+namespace GardenGroup.ViewModels;
+
+public class TicketViewModel(IServiceManager service, MainViewModel viewModel)
 {
-    public class TicketViewModel(IServiceManager service, MainViewModel viewModel)
+    public IServiceManager ServiceManager
     {
-        public IServiceManager ServiceManager
-        {
-            get => service;
-            private set => value = service;
-        }
+        get => service;
+        private set => value = service;
     }
 }

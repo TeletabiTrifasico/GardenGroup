@@ -22,7 +22,11 @@
         <DataTemplate DataType="{x:Type models:LoginViewModel}">
             <views:Login />
         </DataTemplate>
-
+        
+        <DataTemplate DataType="{x:Type models:PasswordResetViewModel}">
+            <views:PasswordReset />
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type models:DashboardViewModel}">
             <views:Dashboard/>
         </DataTemplate>
