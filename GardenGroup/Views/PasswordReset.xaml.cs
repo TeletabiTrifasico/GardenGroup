@@ -89,7 +89,8 @@ public partial class PasswordReset : UserControl
         }
 
         var smtp = new Service.Mail.Smtp(mail, password);
-        smtp.SendEmail(TargetEmail!, pin);
+        if (!smtp.SendEmail(TargetEmail!, TargetEmployee.FullName, TargetEmail!))
+            MessageBox.Show("Failed to send email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
     }
 
     private bool CreatePasswordReset(string pin)

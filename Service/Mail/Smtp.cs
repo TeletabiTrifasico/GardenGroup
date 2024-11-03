@@ -1,5 +1,4 @@
-﻿using System;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 
@@ -7,15 +6,15 @@ namespace Service.Mail;
 
 public class Smtp(string smtpUser, string smtpPassword)
 {
-    private readonly string _smtpServer = "smtp.gmail.com";
-    private readonly int _smtpPort = 587;
+    private const string SmtpServer = "smtp.gmail.com";
+    private const int SmtpPort = 587;
 
-    public bool SendEmail(string toEmail, string pin)
+    public bool SendEmail(string toEmail, string recipientName, string pin)
     {
         // Create a new email message
         var message = new MimeMessage();
-        message.From.Add(new MailboxAddress("Sender Name", smtpUser));
-        message.To.Add(new MailboxAddress("Recipient Name", toEmail));
+        message.From.Add(new MailboxAddress("Garden Group", smtpUser));
+        message.To.Add(new MailboxAddress(recipientName, toEmail));
         message.Subject = "Garden Group Password Reset";
         
         var body = $"""
@@ -32,7 +31,7 @@ public class Smtp(string smtpUser, string smtpPassword)
         using var client = new SmtpClient();
         try
         {
-            client.Connect(_smtpServer, _smtpPort, SecureSocketOptions.StartTls);
+            client.Connect(SmtpServer, SmtpPort, SecureSocketOptions.StartTls);
             
             client.Authenticate(smtpUser, smtpPassword);
             
