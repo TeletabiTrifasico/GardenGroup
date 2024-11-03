@@ -8,7 +8,8 @@ namespace GardenGroup.Views.Windows;
 public partial class LookupTicket : Window
 {
     private IServiceManager _serviceManager;
-    private Model.Ticket _ticket;
+    private Model.Ticket _ticket = null!;
+    
     public LookupTicket(IServiceManager serviceManager, ObjectId ticketId)
     {
         _serviceManager = serviceManager;
@@ -21,15 +22,14 @@ public partial class LookupTicket : Window
     {
         try
         {
-            _ticket = _serviceManager.TicketService.GetTicketById(ticketId);
-            if(_ticket == null)
-                throw new NullReferenceException("Ticket not found");
+            _ticket = _serviceManager.TicketService.GetTicketById(ticketId) ?? throw new NullReferenceException("Ticket not found");
         }
         catch (Exception e)
         {
-            MessageBox.Show($"Error while retriving ticket: {e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"Error while retrieving ticket: {e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             Close();
         }
+        
         InitProperties();
     }
 
@@ -48,7 +48,15 @@ public partial class LookupTicket : Window
 
     private void SaveBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        _serviceManager.TicketService.UpdateTicket(_ticket);
+        try
+        {
+            _serviceManager.TicketService.UpdateTicket(_ticket);
+        }
+        catch (Exception)
+        {
+            MessageBox.Show("Error while saving ticket", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        
         MessageBox.Show("Ticket updated successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 

@@ -4,7 +4,7 @@ using DAL.Extensions;
 
 namespace DAL;
 
-public class EmployeesDao : MongoCRUD
+public class EmployeesDao : BaseDao
 {
     public Employee Login(string username, string password)
     {

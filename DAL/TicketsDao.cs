@@ -6,7 +6,7 @@ using MongoDB.Driver.Linq;
 
 namespace DAL;
 
-public class TicketsDao : MongoCRUD
+public class TicketsDao : BaseDao
 {
     private Ticket PopulateAssignedEmployee(BsonDocument ticketDoc)
     {
@@ -42,18 +42,23 @@ public class TicketsDao : MongoCRUD
 
     public void UpdateTicket(Ticket ticket)
     {
-        var filter = Builders<Ticket>.Filter.Eq(x => x.Id, ticket.Id);
+        var filter = FilterEq<Ticket, ObjectId>("Id", ticket.Id);
         var update = Builders<Ticket>.Update
             .Set(x => x.Status, ticket.Status)
             .Set(x => x.Priority, ticket.Priority);
 
-        var updateResult = _db.GetCollection<Ticket>("Tickets").UpdateOne(filter, update);
-        
-        if (updateResult.ModifiedCount == 0)
-        {
-            Console.WriteLine("No documents were updated.");
-        }
+        var result = GetCollection<Ticket>("Tickets").UpdateOne(filter, update);
 
-        //var update = GetCollection<Ticket>("Tickets").UpdateOne(x => x.Id == , filter);
+        if (result.ModifiedCount == 0)
+            throw new Exception($"Failed to update ticket.");
+    }
+
+    public void DeleteTicket(Ticket ticket)
+    {
+        var filter = FilterEq<Ticket, ObjectId>("Id", ticket.Id);
+        var result = GetCollection<Ticket>("Tickets").DeleteOne(filter);
+        
+        if(result.DeletedCount == 0)
+            throw new Exception("Failed to delete ticket.");
     }
 }

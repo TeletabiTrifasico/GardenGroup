@@ -5,11 +5,7 @@ namespace Service;
 
 public class EmployeeService
 {
-    private readonly EmployeesDao _employeesDao;
-    public EmployeeService()
-    {
-        _employeesDao = new EmployeesDao();
-    }
+    private readonly EmployeesDao _employeesDao = new();
 
     public Employee Login(string username, string password) => 
         _employeesDao.Login(username, password);
