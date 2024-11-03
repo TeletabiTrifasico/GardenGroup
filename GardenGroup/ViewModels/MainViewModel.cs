@@ -20,7 +20,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
         IsSidebarVisible = false;
 
         SwitchToLogin();
-        //CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel, MainViewModel>(this);
     }
 
     public object CurrentView

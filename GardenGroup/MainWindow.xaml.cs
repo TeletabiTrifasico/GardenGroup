@@ -15,24 +15,23 @@ using GardenGroup.ViewModels;
 using GardenGroup.Views;
 using Service;
 
-namespace GardenGroup
+namespace GardenGroup;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public MainWindow(IViewModelFactory viewModelFactory)
     {
-        public MainWindow(IViewModelFactory viewModelFactory)
-        {
-            DataContext = new ViewModels.MainViewModel(viewModelFactory);
-            InitializeComponent();
-        }
-
-
-        private void ticketsBtn_Click(object sender, RoutedEventArgs e) =>
-            ((MainViewModel)DataContext).SwitchToTickets();
-
-        private void dashboardBtn_Click(object sender, RoutedEventArgs e) =>
-            ((MainViewModel)DataContext).SwitchToDashboard();
+        DataContext = new ViewModels.MainViewModel(viewModelFactory);
+        InitializeComponent();
     }
+
+
+    private void ticketsBtn_Click(object sender, RoutedEventArgs e) =>
+        ((MainViewModel)DataContext).SwitchToTickets();
+
+    private void dashboardBtn_Click(object sender, RoutedEventArgs e) =>
+        ((MainViewModel)DataContext).SwitchToDashboard();
 }
