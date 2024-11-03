@@ -1,81 +1,115 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using GardenGroup.ViewModels;
 using GardenGroup.Views.Windows;
 using Model;
 
-namespace GardenGroup.Views
+namespace GardenGroup.Views;
+
+/// <summary>
+/// Interaction logic for Ticket.xaml.
+/// Used by service employees
+/// </summary>
+public partial class Ticket : UserControl
 {
-    /// <summary>
-    /// Interaction logic for Ticket.xaml.
-    /// Used by service employees
-    /// </summary>
-    public partial class Ticket : UserControl
+        
+    private TicketViewModel ViewModel => DataContext as TicketViewModel ?? throw new NullReferenceException();
+    private List<Model.Ticket> _tickets;
+        
+    public Ticket()
     {
+        Loaded += (s, e) => PrepareView();
+            
+        InitializeComponent();
+    }
+
+    private List<Model.Ticket> GetTickets() => ViewModel.ServiceManager.TicketService.GetAllTickets(); 
+    
+    private void PrepareView()
+    {
+        _tickets = GetTickets();
+        InitComboboxItem();
+        InitDatePickers();
+            
+        UpdateTicketList();
+    }
+
+    private void UpdateTicketList()
+    {
+        var data = _tickets;
+        data = data.OrderByDescending(x => x.Status == Model.Ticket.Statuses.Open).ToList();
+
+        try
+        {
+            var parsed = Enum.TryParse<Model.Ticket.Statuses>(StatusBox.SelectedValue.ToString(), out var status);
+            if (parsed)
+                data = data.OrderByDescending(x => x.Status == status).ToList();
+
+            parsed = Enum.TryParse<Model.Ticket.Priorities>(PriorityBox.SelectedValue.ToString(), out var priority);
+            if (parsed)
+                data = data.OrderByDescending(x => x.Priority == priority).ToList();
+        }
+        catch (NullReferenceException)
+        { }
         
-        private TicketViewModel ViewModel => DataContext as TicketViewModel ?? throw new NullReferenceException();
-        private List<Model.Ticket> _tickets;
+        if (!string.IsNullOrEmpty(EmployeeTxt.Text))
+            data = data.OrderByDescending(x => x.AssignedEmployee?.FullName.Contains(EmployeeTxt.Text, StringComparison.OrdinalIgnoreCase)).ToList();
         
-        public Ticket()
-        {
-            Loaded += (s, e) => GetData();
+        var startDate = StartDatePicker.SelectedDate ?? _tickets.Min(x => x.DateReported);
+        var endDate = EndDatePicker.SelectedDate ?? DateTime.Today;
+        
+        data = data.Where(x => x.DateReported >= startDate && x.DateReported <= endDate).ToList();
+
+        TicketsList.ItemsSource = data;
+    }
+
+    private void InitComboboxItem()
+    {
+        StatusBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Statuses));
+        StatusBox.SelectedIndex = 0;
+        
+        PriorityBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Priorities));
+        PriorityBox.SelectedIndex = 0;
+    }
+
+    private void InitDatePickers()
+    {
+        var earliestDate = _tickets.Min(x => x.DateReported);
+        StartDatePicker.SelectedDate = earliestDate;
+        
+        EndDatePicker.SelectedDate = DateTime.Today;
+    }
+
+    private void PriorityBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateTicketList();
+
+    private void EmployeeTxt_OnTextChanged(object sender, TextChangedEventArgs e) => UpdateTicketList();
+
+    private void StatusBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateTicketList();
+
+    private void TicketsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (TicketsList.SelectedItem is not Model.Ticket selected)
+            return;
             
-            InitializeComponent();
-        }
+        var lookup = new LookupTicket(ViewModel.ServiceManager, selected.Id);
+        lookup.Show();
+        lookup.Closed += (s, _) => LookupTicket_FormClosed();
+    }
 
-        private void GetData()
-        {
-            _tickets = ViewModel.ServiceManager.TicketService.GetAllTickets();
-            InitComboxItem();
-            
-            UpdateTicketList();
-        }
+    private void LookupTicket_FormClosed()
+    {
+        _tickets = GetTickets();
+        UpdateTicketList();
+    }
 
-        private void UpdateTicketList()
-        {
-            var data = _tickets;
-            data = data.OrderByDescending(x => x.Status == Model.Ticket.Statuses.Open).ToList();
+    private void StartDatePicker_OnSelectedDateChanged(object? sender, SelectionChangedEventArgs e) => UpdateTicketList();
+        
+    private void EndDatePicker_OnSelectedDateChanged(object? sender, SelectionChangedEventArgs e) => UpdateTicketList();
 
-            try
-            {
-                var parsed = Enum.TryParse<Model.Ticket.Statuses>(StatusBox.SelectedValue.ToString(), out var status);
-                if (parsed)
-                    data = data.OrderByDescending(x => x.Status == status).ToList();
-
-                parsed = Enum.TryParse<Model.Ticket.Priorities>(PriorityBox.SelectedValue.ToString(), out var priority);
-                if (parsed)
-                    data = data.OrderByDescending(x => x.Priority == priority).ToList();
-            }
-            catch (NullReferenceException)
-            { }
-            
-            if (!string.IsNullOrEmpty(EmployeeTxt.Text))
-                data = data.OrderByDescending(x => x.AssignedEmployee.FullName.Contains(EmployeeTxt.Text, StringComparison.OrdinalIgnoreCase)).ToList();
-
-            TicketsList.ItemsSource = data;
-        }
-
-        private void InitComboxItem()
-        {
-            StatusBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Statuses));
-            StatusBox.SelectedIndex = 0;
-            PriorityBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Priorities));
-            PriorityBox.SelectedIndex = 0;
-        }
-
-        private void PriorityBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateTicketList();
-
-        private void EmployeeTxt_OnTextChanged(object sender, TextChangedEventArgs e) => UpdateTicketList();
-
-        private void StatusBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => UpdateTicketList();
-
-        private void TicketsList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (TicketsList.SelectedItem is not Model.Ticket selected)
-                return;
-            
-            var lookup = new LookupTicket(ViewModel.ServiceManager, selected.Id);
-            lookup.Show();
-        }
+    private void ResetDatesBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        InitDatePickers();
+        UpdateTicketList();
     }
 }

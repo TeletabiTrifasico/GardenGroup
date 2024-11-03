@@ -15,6 +15,7 @@ namespace GardenGroup.ViewModels
         private readonly IServiceManager _serviceManager;
         
         public ICommand LoginCommand { get; }
+        public ICommand ResetPasswordCommand { get; }
         
         public LoginViewModel(IServiceManager serviceManager, MainViewModel mainViewModel)
         {
@@ -22,11 +23,14 @@ namespace GardenGroup.ViewModels
             _serviceManager = serviceManager;
             
             LoginCommand = new RelayCommand(OnLogin);
+            ResetPasswordCommand = new RelayCommand(PasswordReset);
         }
 
         private void OnLogin(object parameter) => _mainViewModel.SwitchToDashboard();
 
-        public Employee Login(string username, string password) =>
+        private void PasswordReset(object parameter) => _mainViewModel.SwitchToResetPassword();
+
+        public Employee? Login(string username, string password) =>
             _serviceManager.EmployeeService.Login(username, password);
 
         public void SetLoggedInEmployee(Employee employee) => 

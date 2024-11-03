@@ -9,8 +9,9 @@
     <Grid Margin="50,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0"
@@ -19,7 +20,31 @@
                 Service Employee Tickets
             </Label>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="155"/>
+                <ColumnDefinition Width="155"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0"
+                  Margin="0,0,5,0">
+                <Label FontSize="10">Start Date</Label>
+                <DatePicker x:Name="StartDatePicker"
+                            SelectedDateChanged="StartDatePicker_OnSelectedDateChanged"/>    
+            </Grid>
+            <Grid Grid.Column="1"
+                  Margin="0,0,5,0">
+                <Label FontSize="10">End Date</Label>
+                <DatePicker x:Name="EndDatePicker" 
+                            SelectedDateChanged="EndDatePicker_OnSelectedDateChanged"/>    
+            </Grid>
+            <Grid Grid.Column="2">
+                <Button x:Name="ResetDatesBtn" Click="ResetDatesBtn_OnClick">Reset dates</Button>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2">
             <ListView x:Name="TicketsList"
                       SelectionChanged="TicketsList_OnSelectionChanged"
                       SelectionMode="Single">
@@ -47,7 +72,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             
         </Grid>
     </Grid>

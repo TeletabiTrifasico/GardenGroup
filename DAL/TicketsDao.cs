@@ -43,14 +43,39 @@ public class TicketsDao : BaseDao
     public void UpdateTicket(Ticket ticket)
     {
         var filter = FilterEq<Ticket, ObjectId>("Id", ticket.Id);
-        var update = Builders<Ticket>.Update
+        var updateDefinition = Builders<Ticket>.Update
             .Set(x => x.Status, ticket.Status)
-            .Set(x => x.Priority, ticket.Priority);
+            .Set(x => x.Priority, ticket.Priority)
+            .Set(x => x.Description, ticket.Description);
 
-        var result = GetCollection<Ticket>("Tickets").UpdateOne(filter, update);
+        var result = GetCollection<Ticket>("Tickets").UpdateOne(filter, updateDefinition);
 
         if (result.ModifiedCount == 0)
             throw new Exception($"Failed to update ticket.");
+    }
+    
+    public void UpdateTicketDynamic(Ticket ticket)
+    {
+        var filter = FilterEq<Ticket, ObjectId>("Id", ticket.Id);
+        
+        var updates = new List<UpdateDefinition<Ticket>>();
+        
+        foreach (var property in typeof(Ticket).GetProperties())
+        {
+            if (property.Name == "Id")
+                continue;
+            
+            var value = property.GetValue(ticket);
+            var currentUpdate = Builders<Ticket>.Update.Set(property.Name, value);
+            updates.Add(currentUpdate);
+        }
+        
+        var updateDefinition = Builders<Ticket>.Update.Combine(updates);
+        
+        var result = GetCollection<Ticket>("Tickets").UpdateOne(filter, updateDefinition);
+        
+        if(result.ModifiedCount == 0)
+            throw new Exception("Failed to update ticket.");
     }
 
     public void DeleteTicket(Ticket ticket)

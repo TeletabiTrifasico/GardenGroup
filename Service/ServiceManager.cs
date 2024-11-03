@@ -6,4 +6,5 @@ public class ServiceManager : IServiceManager
 {
     public EmployeeService EmployeeService { get; set; } = new();
     public TicketService TicketService { get; set; } = new();
+    public PasswordService PasswordService { get; set; } = new();
 }

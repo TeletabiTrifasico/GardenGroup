@@ -27,6 +27,7 @@ namespace GardenGroup
                     // Add new viewmodels here
                     services.AddTransient<MainViewModel>();
                     services.AddTransient<LoginViewModel>();
+                    services.AddTransient<PasswordResetViewModel>();
                     services.AddTransient<DashboardViewModel>();
                     services.AddTransient<TicketViewModel>();
                     services.AddTransient<EmployeeTicketsViewModel>();

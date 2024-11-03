@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using GardenGroup.ViewModels;
 
 namespace GardenGroup.Views
@@ -29,6 +30,11 @@ namespace GardenGroup.Views
                 errorLabel.Content = "Invalid username or password!";
                 errorLabel.Visibility = Visibility.Visible;
             }
+        }
+        
+        private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ((LoginViewModel)DataContext).ResetPasswordCommand.Execute(this);
         }
     }
 }
