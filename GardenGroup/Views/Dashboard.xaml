@@ -3,11 +3,239 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:local="clr-namespace:GardenGroup.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
              Background="White">
-    <Grid>
-        <Label FontSize="40">Dashboard</Label>
+
+    <Grid Margin="20,10,0,0" Width="957">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Text="Welcome, John Smith" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Metric Boxes and Charts Section -->
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Metric Boxes -->
+            <Grid Grid.Row="0" HorizontalAlignment="Stretch">
+                <Grid.Resources>
+                    <Style x:Key="MetricBoxStyle" TargetType="{x:Type Border}">
+                        <Setter Property="Background" Value="MediumSlateBlue"/>
+                        <Setter Property="CornerRadius" Value="5"/>
+                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="Padding" Value="10"/>
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Overdue Tickets Metric Box -->
+                <Border Grid.Column="0" Background="MediumSlateBlue" CornerRadius="8" Padding="10" Margin="10">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Overdue Tickets" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding OverdueTasks}" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tickets Due Today Metric Box -->
+                <Border Grid.Column="1" Background="MediumSlateBlue" CornerRadius="8" Padding="10" Margin="10">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Tickets Due Today" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding TicketsDueToday}" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Open Tickets Metric Box -->
+                <Border Grid.Column="2" Background="MediumSlateBlue" CornerRadius="8" Padding="10" Margin="10">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Open Tickets" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding OpenTickets}" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tickets on Hold Metric Box -->
+                <Border Grid.Column="3" Background="MediumSlateBlue" CornerRadius="8" Padding="10" Margin="10">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Tickets on Hold" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding TicketsOnHold}" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- All Tickets Metric Box -->
+                <Border Grid.Column="4" Background="MediumSlateBlue" CornerRadius="8" Padding="10" Margin="10">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="All Tickets" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding AllTicketsCount}" FontSize="24" Foreground="White" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Charts Section -->
+            <Grid Grid.Row="1" Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="319*"/>
+                    <ColumnDefinition Width="200*"/>
+                    <ColumnDefinition Width="119*"/>
+                    <ColumnDefinition Width="319*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Unresolved Tickets by Priority (Pie Chart) -->
+                <Border Grid.Column="0" Background="White" BorderBrush="#3F51B5" BorderThickness="2" CornerRadius="5" Padding="10" Margin="10,10,10,10">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!-- Title Text at the Top -->
+                        <TextBlock Text="Unresolved Tickets by Priority" 
+                   FontWeight="Bold" 
+                   FontSize="16" 
+                   Foreground="#3F51B5" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,10"/>
+
+                        <!-- Enlarged Pie Chart -->
+                        <lvc:PieChart Width="200" Height="185" HorizontalAlignment="Center">
+                            <lvc:PieChart.Series>
+                                <lvc:PieSeries Title="Low" Values="{Binding LowPriorityPercentage}" Fill="Green"/>
+                                <lvc:PieSeries Title="Normal" Values="{Binding NormalPriorityPercentage}" Fill="Orange"/>
+                                <lvc:PieSeries Title="High" Values="{Binding HighPriorityPercentage}" Fill="Red"/>
+                            </lvc:PieChart.Series>
+                        </lvc:PieChart>
+                    </StackPanel>
+                </Border>
+
+                <!-- Ticket Status Overview (Progress Bars) -->
+                <Border Grid.Column="1" Background="White" BorderBrush="#3F51B5" BorderThickness="2" CornerRadius="5" Padding="10" Margin="10,10,10,10" Grid.ColumnSpan="2">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Ticket Status Overview" FontWeight="Bold" FontSize="16" Foreground="#3F51B5" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Open Tickets" Margin="5,0"/>
+                        <ProgressBar Value="{Binding OpenPercentage}" Height="20" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="In Progress Tickets" Margin="5,0"/>
+                        <ProgressBar Value="{Binding InProgressPercentage}" Height="20" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Resolved Tickets" Margin="5,0"/>
+                        <ProgressBar Value="{Binding ResolvedPercentage}" Height="20" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Closed Without Resolution" Margin="5,0"/>
+                        <ProgressBar Value="{Binding ClosedWithoutResolutionPercentage}" Height="20" Margin="0,0,0,10"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tickets Coming Due (Progress Bars) -->
+                <Border Grid.Column="3" Background="White" BorderBrush="#3F51B5" BorderThickness="2" CornerRadius="5" Padding="10" Margin="10,10,10,10">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="Tickets Coming Due" FontWeight="Bold" FontSize="16" Foreground="#3F51B5" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Today" Margin="5,0"/>
+                        <ProgressBar Value="{Binding TicketsDueToday}" Height="20" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Tomorrow" Margin="5,0"/>
+                        <ProgressBar Value="{Binding TicketsDueTomorrow}" Height="20" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="This Month" Margin="5,0"/>
+                        <ProgressBar Value="{Binding TicketsDueThisMonth}" Height="20" Margin="0,0,0,10"/>
+
+                        <TextBlock Text="More than a Month" Margin="5,0"/>
+                        <ProgressBar Value="{Binding TicketsDueMoreThanMonth}" Height="20" Margin="0,0,0,10"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- Scrollable Ticket List Section -->
+        <Border Grid.Row="2" Background="WhiteSmoke" CornerRadius="8" Padding="10" Margin="0,0,0,50">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding AllTickets}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#3F51B5" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,10" Background="White">
+                                <StackPanel>
+                                    <!-- Ticket Title and Priority Badge -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Subject}" FontSize="18" FontWeight="Bold" Foreground="#3F51B5" />
+                                        <TextBlock Text="{Binding PriorityString}" FontSize="14" FontWeight="SemiBold" Margin="10,0,0,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                    <Style.Triggers>
+                                                        <!-- Priority-Based Color Triggers -->
+                                                        <DataTrigger Binding="{Binding PriorityString}" Value="Low">
+                                                            <Setter Property="Foreground" Value="Green" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding PriorityString}" Value="Normal">
+                                                            <Setter Property="Foreground" Value="Orange" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding PriorityString}" Value="High">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <!-- Description -->
+                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="14" Foreground="DarkSlateGray" Margin="0,5,0,0" />
+
+                                    <!-- Status, Priority, and Deadline Information -->
+                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Stretch">
+                                        <!-- Status Display -->
+                                        <StackPanel>
+                                            <TextBlock Text="Status:" FontWeight="Bold" FontSize="12" Foreground="Gray"/>
+                                            <TextBlock Text="{Binding StatusString}" FontSize="14" Foreground="#3F51B5"/>
+                                        </StackPanel>
+
+                                        <!-- Priority Display -->
+                                        <StackPanel Margin="15,0,0,0">
+                                            <TextBlock Text="Priority:" FontWeight="Bold" FontSize="12" Foreground="Gray"/>
+                                            <TextBlock Text="{Binding PriorityString}" FontSize="14">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="Gray"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PriorityString}" Value="Low">
+                                                                <Setter Property="Foreground" Value="Green" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding PriorityString}" Value="Normal">
+                                                                <Setter Property="Foreground" Value="Orange" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding PriorityString}" Value="High">
+                                                                <Setter Property="Foreground" Value="Red" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                        <!-- Deadline Display -->
+                                        <StackPanel Margin="15,0,0,0">
+                                            <TextBlock Text="Deadline:" FontWeight="Bold" FontSize="12" Foreground="Gray"/>
+                                            <TextBlock Text="{Binding Deadline, StringFormat='{}{0:MM/dd/yyyy}'}" FontSize="14" Foreground="DarkRed"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </UserControl>
