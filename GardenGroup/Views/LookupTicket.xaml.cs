@@ -26,7 +26,6 @@ public partial class LookupTicket : UserControl
         _serviceManager = ViewModel.ServiceManager;
         LoadTicket(ViewModel.TicketId);
     }
-    
 
     private void LoadTicket(ObjectId ticketId)
     {
