@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using GardenGroup.StartupHelpers;
 using Model;
+using MongoDB.Bson;
 
 namespace GardenGroup.ViewModels;
 
@@ -19,7 +20,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         _viewModelFactory = viewModelFactory;
         IsSidebarVisible = false;
 
-        SwitchToLogin();
+        CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel, MainViewModel>(this);
     }
 
     public object CurrentView
@@ -30,7 +31,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             _currentView = value;
             OnPropertyChanged(nameof(CurrentView));
 
-            IsSidebarVisible = !(value is LoginViewModel or PasswordResetViewModel);
+            IsSidebarVisible = value is not (LoginViewModel or PasswordResetViewModel);
             UpdateAlignments();
         }
     }
@@ -93,6 +94,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     #region Switches
 
     public void SwitchToLogin() => CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel, MainViewModel>(this);
+    
     public void SwitchToResetPassword() => CurrentView = _viewModelFactory.CreateViewModel<PasswordResetViewModel>();
     
     public void SwitchToDashboard() => CurrentView = _viewModelFactory.CreateViewModel<DashboardViewModel>();
@@ -101,6 +103,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
         CurrentView = CurrentEmployee.UserType == Privilieges.ServiceDesk
             ? _viewModelFactory.CreateViewModel<TicketViewModel>()
             : _viewModelFactory.CreateViewModel<EmployeeTicketsViewModel>();
+
+    public void SwitchToLookupTicket(ObjectId ticketId) => 
+        CurrentView = _viewModelFactory.CreateViewModelWithParameter<LookupTicketViewModel, ObjectId>(ticketId);
 
     #endregion
 }

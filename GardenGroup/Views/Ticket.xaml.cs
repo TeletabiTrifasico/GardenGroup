@@ -1,9 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using GardenGroup.ViewModels;
-using GardenGroup.Views.Windows;
-using Model;
 
 namespace GardenGroup.Views;
 
@@ -15,6 +12,7 @@ public partial class Ticket : UserControl
 {
         
     private TicketViewModel ViewModel => DataContext as TicketViewModel ?? throw new NullReferenceException();
+    private MainViewModel MainViewModel => Application.Current.MainWindow.DataContext as MainViewModel ?? throw new NullReferenceException();
     private List<Model.Ticket> _tickets;
         
     public Ticket()
@@ -91,10 +89,8 @@ public partial class Ticket : UserControl
     {
         if (TicketsList.SelectedItem is not Model.Ticket selected)
             return;
-            
-        var lookup = new LookupTicket(ViewModel.ServiceManager, selected.Id);
-        lookup.Show();
-        lookup.Closed += (s, _) => LookupTicket_FormClosed();
+          
+        MainViewModel.SwitchToLookupTicket(selected.Id);
     }
 
     private void LookupTicket_FormClosed()

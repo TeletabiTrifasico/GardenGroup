@@ -1,7 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using GardenGroup.ViewModels;
-using GardenGroup.Views.Windows;
-using Model;
 
 namespace GardenGroup.Views;
 
@@ -12,6 +11,7 @@ public partial class EmployeeTickets : UserControl
 {
         
     private TicketViewModel ViewModel => DataContext as TicketViewModel ?? throw new NullReferenceException();
+    private MainViewModel MainViewModel => Application.Current.MainWindow.DataContext as MainViewModel ?? throw new NullReferenceException();
     private List<Model.Ticket> _tickets;
         
     public EmployeeTickets()
@@ -73,7 +73,6 @@ public partial class EmployeeTickets : UserControl
         if (TicketsList.SelectedItem is not Model.Ticket selected)
             return;
             
-        var lookup = new LookupTicket(ViewModel.ServiceManager, selected.Id);
-        lookup.Show();
+        MainViewModel.SwitchToLookupTicket(selected.Id);
     }
 }

@@ -10,6 +10,8 @@ namespace GardenGroup.Views;
 public partial class PasswordReset : UserControl
 {
     private PasswordResetViewModel ViewModel => DataContext as PasswordResetViewModel ?? throw new NullReferenceException();
+    private MainViewModel MainViewModel => Application.Current.MainWindow.DataContext as MainViewModel ?? throw new NullReferenceException();
+    
     private string? TargetEmail { get; set; }
     private Employee TargetEmployee { get; set; }
     
@@ -48,8 +50,7 @@ public partial class PasswordReset : UserControl
         SendPinGrid.Visibility = Visibility.Hidden;
         PinGrid.Visibility = Visibility.Visible;
         
-        ResetSmtpPassword(mail, password);
-        
+        SendPasswordResetPin(mail, password);
     }
     
     private bool IsValidEmail(string email)
@@ -76,10 +77,9 @@ public partial class PasswordReset : UserControl
         password = split[1];
     }
 
-    private void ResetSmtpPassword(string mail, string password)
+    private void SendPasswordResetPin(string mail, string password)
     {
-        var random = new Random();
-        var number = random.Next(0, 1000000);
+        var number = new Random().Next(0, 1000000);
         var pin = number.ToString("000000");
 
         if (!CreatePasswordReset(pin))
@@ -89,7 +89,8 @@ public partial class PasswordReset : UserControl
         }
 
         var smtp = new Service.Mail.Smtp(mail, password);
-        smtp.SendEmail(TargetEmail!, pin);
+        if (!smtp.SendEmail(TargetEmail!, TargetEmployee.FullName, pin))
+            MessageBox.Show("Failed to send email.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
     }
 
     private bool CreatePasswordReset(string pin)
@@ -106,7 +107,7 @@ public partial class PasswordReset : UserControl
         return true;
     }
 
-    private void CheckPin()
+    private void VerifyPin()
     {
         var pin = PinTxt.Text;
         if (!_serviceManager.PasswordService.VerifyPasswordReset(TargetEmployee.Id, pin))
@@ -134,7 +135,7 @@ public partial class PasswordReset : UserControl
         _serviceManager.EmployeeService.ChangePassword(TargetEmployee.Id, hash);
         _serviceManager.PasswordService.DeletePasswordReset(TargetEmployee.Id);
         
-        ViewModel.SwitchToLogin();
+        MainViewModel.SwitchToLogin();
     }
     
 
@@ -144,7 +145,9 @@ public partial class PasswordReset : UserControl
         StartReset();
     }
 
-    private void ResetPasswordBtn_OnClick(object sender, RoutedEventArgs e) => CheckPin();
+    private void ResetPasswordBtn_OnClick(object sender, RoutedEventArgs e) => VerifyPin();
 
     private void ChangePasswordBtn_OnClick(object sender, RoutedEventArgs e) => ChangePassword();
+
+    private void ReturnBtn_OnClick(object sender, RoutedEventArgs e) => MainViewModel.SwitchToLogin();
 }
