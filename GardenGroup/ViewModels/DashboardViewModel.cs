@@ -1,19 +1,186 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using DAL;
+using Model;
 using Service;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace GardenGroup.ViewModels
 {
-    public class DashboardViewModel
+    public class DashboardViewModel : INotifyPropertyChanged
     {
-        public DashboardViewModel(IServiceManager serviceManager, MainViewModel mainViewModel)
+        private readonly TicketService _ticketService;
+
+        public DashboardViewModel(IServiceManager serviceManager)
         {
-            
+            _ticketService = serviceManager.TicketService;
+
+            // Initialize collections to avoid null reference issues
+            PriorityData = new ObservableCollection<PriorityModel>();
+            AllTickets = new ObservableCollection<Ticket>();
+
+            LowPriorityPercentage = new ChartValues<double> { 0 };
+            NormalPriorityPercentage = new ChartValues<double> { 0 };
+            HighPriorityPercentage = new ChartValues<double> { 0 };
+
+            // Load data for dashboard
+            LoadDashboardData();
+            LoadAllTickets();
         }
+
+        // Metric Boxes Properties
+        private int _overdueTasks;
+        public int OverdueTasks
+        {
+            get => _overdueTasks;
+            set { _overdueTasks = value; OnPropertyChanged(); }
+        }
+
+        private int _ticketsDueToday;
+        public int TicketsDueToday
+        {
+            get => _ticketsDueToday;
+            set { _ticketsDueToday = value; OnPropertyChanged(); }
+        }
+
+        private int _openTickets;
+        public int OpenTickets
+        {
+            get => _openTickets;
+            set { _openTickets = value; OnPropertyChanged(); }
+        }
+
+        private int _ticketsOnHold;
+        public int TicketsOnHold
+        {
+            get => _ticketsOnHold;
+            set { _ticketsOnHold = value; OnPropertyChanged(); }
+        }
+
+        private int _allTicketsCount;
+        public int AllTicketsCount
+        {
+            get => _allTicketsCount;
+            set { _allTicketsCount = value; OnPropertyChanged(); }
+        }
+
+        // Ticket Status Overview Properties
+        private double _openPercentage;
+        public double OpenPercentage
+        {
+            get => _openPercentage;
+            set { _openPercentage = value; OnPropertyChanged(); }
+        }
+
+        private double _inProgressPercentage;
+        public double InProgressPercentage
+        {
+            get => _inProgressPercentage;
+            set { _inProgressPercentage = value; OnPropertyChanged(); }
+        }
+
+        private double _resolvedPercentage;
+        public double ResolvedPercentage
+        {
+            get => _resolvedPercentage;
+            set { _resolvedPercentage = value; OnPropertyChanged(); }
+        }
+
+        private double _closedWithoutResolutionPercentage;
+        public double ClosedWithoutResolutionPercentage
+        {
+            get => _closedWithoutResolutionPercentage;
+            set { _closedWithoutResolutionPercentage = value; OnPropertyChanged(); }
+        }
+
+        // Properties for Pie Chart Values
+        public ChartValues<double> LowPriorityPercentage { get; set; }
+        public ChartValues<double> NormalPriorityPercentage { get; set; }
+        public ChartValues<double> HighPriorityPercentage { get; set; }
+
+        // Unresolved Tickets by Priority (Pie Chart) Properties
+        public ObservableCollection<PriorityModel> PriorityData { get; set; }
+
+        // Observable collection to hold all tickets for the scrollable list
+        public ObservableCollection<Ticket> AllTickets { get; set; }
+
+        // "Tickets Coming Due" Properties
+        public int TicketsDueTomorrow { get; set; }
+        public int TicketsDueThisMonth { get; set; }
+        public int TicketsDueMoreThanMonth { get; set; }
+
+        private void LoadDashboardData()
+        {
+            // Load metrics for Metric Boxes
+            OverdueTasks = _ticketService.GetOverdueTicketsCount();
+            TicketsDueToday = _ticketService.GetTicketsDueTodayCount();
+            OpenTickets = _ticketService.GetCountByStatus((int)Ticket.Statuses.Open);
+            TicketsOnHold = _ticketService.GetCountByStatus((int)Ticket.Statuses.InProgress);
+            AllTicketsCount = _ticketService.GetAllTickets().Count;
+
+            // Tickets Coming Due metrics
+            TicketsDueTomorrow = _ticketService.GetTicketsDueTomorrowCount();
+            TicketsDueThisMonth = CalculateTicketsDueThisMonth();
+            TicketsDueMoreThanMonth = CalculateTicketsDueMoreThanMonth();
+
+            // Load status percentages
+            UpdateStatusPercentages();
+
+            // Load priority data for Pie Chart
+            UpdatePriorityData();
+        }
+
+        private void LoadAllTickets()
+        {
+            // Clear the existing tickets and load fresh data
+            AllTickets.Clear();
+            var tickets = _ticketService.GetAllTickets();
+            foreach (var ticket in tickets)
+            {
+                AllTickets.Add(ticket);
+            }
+        }
+
+        private void UpdateStatusPercentages()
+        {
+            int totalTickets = AllTicketsCount > 0 ? AllTicketsCount : 1; // Avoid division by zero
+            OpenPercentage = _ticketService.GetCountByStatus((int)Ticket.Statuses.Open) / (double)totalTickets * 100;
+            InProgressPercentage = _ticketService.GetCountByStatus((int)Ticket.Statuses.InProgress) / (double)totalTickets * 100;
+            ResolvedPercentage = _ticketService.GetCountByStatus((int)Ticket.Statuses.Closed) / (double)totalTickets * 100;
+            ClosedWithoutResolutionPercentage = _ticketService.GetCountByStatus((int)Ticket.Statuses.Closed) / (double)totalTickets * 100;
+        }
+
+        private void UpdatePriorityData()
+        {
+            var totalTickets = AllTicketsCount > 0 ? AllTicketsCount : 1; // Avoid division by zero
+
+            // Update ChartValues to reflect new data
+            LowPriorityPercentage[0] = _ticketService.GetCountByPriority((int)Ticket.Priorities.Low) / (double)totalTickets * 100;
+            NormalPriorityPercentage[0] = _ticketService.GetCountByPriority((int)Ticket.Priorities.Normal) / (double)totalTickets * 100;
+            HighPriorityPercentage[0] = _ticketService.GetCountByPriority((int)Ticket.Priorities.High) / (double)totalTickets * 100;
+
+            // Notify the view of the changes
+            OnPropertyChanged(nameof(LowPriorityPercentage));
+            OnPropertyChanged(nameof(NormalPriorityPercentage));
+            OnPropertyChanged(nameof(HighPriorityPercentage));
+        }
+
+        private int CalculateTicketsDueThisMonth() => _ticketService.GetTicketsDueThisMonthCount();
+        private int CalculateTicketsDueMoreThanMonth() => _ticketService.GetTicketsDueMoreThanMonthCount();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class PriorityModel
+    {
+        public string Priority { get; set; }
+        public double Percentage { get; set; }
     }
 }
