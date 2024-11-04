@@ -71,6 +71,7 @@ public partial class LookupTicket : UserControl
         }
         
         MessageBox.Show("Ticket updated successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        MainViewModel.SwitchToTickets();
     }
 
     private string GetTicketChanges()
