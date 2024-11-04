@@ -1,4 +1,4 @@
-﻿<Window x:Class="GardenGroup.MainWindow"
+﻿ <Window x:Class="GardenGroup.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -22,11 +22,11 @@
         <DataTemplate DataType="{x:Type models:LoginViewModel}">
             <views:Login />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type models:PasswordResetViewModel}">
             <views:PasswordReset />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type models:DashboardViewModel}">
             <views:Dashboard/>
         </DataTemplate>
@@ -38,6 +38,12 @@
         <DataTemplate DataType="{x:Type models:EmployeeTicketsViewModel}">
             <views:EmployeeTickets />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type models:ManageEmployeesViewModel}">
+            <views:ManageEmployees />
+        </DataTemplate>
+
+
     </Window.Resources>
     <Grid>
         <Grid Height="720"
@@ -62,6 +68,8 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+
                             <RowDefinition Height="50"/>
                         </Grid.RowDefinitions>
 
@@ -93,10 +101,17 @@
                                 Tickets
                             </Button>
                         </Grid>
+                        <Grid Grid.Row="3">
+                            <Button x:Name="ManageEmployeesbtn"
+                                Background="Transparent"
+                                FontSize="15"
+                                BorderThickness="0"
+                                Click="ManageEmployeesBtn_Click" Content="Manage Employees&#xD;&#xA;"/>
+                        </Grid>
                     </Grid>
                 </Border>
             </StackPanel>
-            
+
             <Grid Grid.Column="1">
                 <ContentControl Content="{Binding CurrentView}" 
                         HorizontalAlignment="{Binding CurrentHorizontalAlignment}" 

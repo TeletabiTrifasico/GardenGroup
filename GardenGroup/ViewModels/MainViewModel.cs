@@ -94,8 +94,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     public void SwitchToLogin() => CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel, MainViewModel>(this);
     public void SwitchToResetPassword() => CurrentView = _viewModelFactory.CreateViewModel<PasswordResetViewModel>();
-    
+
     public void SwitchToDashboard() => CurrentView = _viewModelFactory.CreateViewModel<DashboardViewModel>();
+    public void SwitchToManageEmployees() => CurrentView = _viewModelFactory.CreateViewModel<ManageEmployeesViewModel>();
+
 
     public void SwitchToTickets() =>
         CurrentView = CurrentEmployee.UserType == Privilieges.ServiceDesk

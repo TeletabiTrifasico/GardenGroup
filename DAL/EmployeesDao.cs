@@ -42,4 +42,24 @@ public class EmployeesDao : BaseDao
         if(result.ModifiedCount == 0)
             throw new Exception("Failed to update employee's password.");
     }
+    public void AddEmployee(Employee employee) =>
+           GetCollection<Employee>("Employees").InsertOne(employee);
+
+    public void UpdateEmployee(Employee employee)
+    {
+        var filter = Builders<Employee>.Filter.Eq(e => e.Id, employee.Id);
+        var result = GetCollection<Employee>("Employees").ReplaceOne(filter, employee);
+
+        if (result.ModifiedCount == 0)
+            throw new Exception("Failed to update employee.");
+    }
+
+    public void DeleteEmployee(ObjectId employeeId)
+    {
+        var filter = Builders<Employee>.Filter.Eq(e => e.Id, employeeId);
+        var result = GetCollection<Employee>("Employees").DeleteOne(filter);
+
+        if (result.DeletedCount == 0)
+            throw new Exception("Failed to delete employee.");
+    }
 }

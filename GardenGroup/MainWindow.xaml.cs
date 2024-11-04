@@ -34,4 +34,7 @@ public partial class MainWindow : Window
 
     private void dashboardBtn_Click(object sender, RoutedEventArgs e) =>
         ((MainViewModel)DataContext).SwitchToDashboard();
+
+    private void ManageEmployeesBtn_Click(object sender, RoutedEventArgs e) =>
+        ((MainViewModel)DataContext).SwitchToManageEmployees();
 }

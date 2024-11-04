@@ -31,7 +31,10 @@ namespace GardenGroup
                     services.AddTransient<DashboardViewModel>();
                     services.AddTransient<TicketViewModel>();
                     services.AddTransient<EmployeeTicketsViewModel>();
-                    
+                    services.AddTransient<ManageEmployeesViewModel>();
+
+
+
                     services.AddTransient<IServiceManager, ServiceManager>();
                 }).Build();
         }
@@ -39,10 +42,10 @@ namespace GardenGroup
         protected override async void OnStartup(StartupEventArgs e)
         {
             await AppHost!.StartAsync();
-            
+
             var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
             startupForm.Show();
-            
+
             base.OnStartup(e);
         }
 
