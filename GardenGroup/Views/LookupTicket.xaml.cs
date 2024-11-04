@@ -1,22 +1,32 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using GardenGroup.ViewModels;
 using MongoDB.Bson;
 using Service;
 
-namespace GardenGroup.Views.Windows;
+namespace GardenGroup.Views;
 
-public partial class LookupTicket : Window
+public partial class LookupTicket : UserControl
 {
+    private LookupTicketViewModel ViewModel => DataContext as LookupTicketViewModel ?? throw new NullReferenceException();
+    private MainViewModel MainViewModel => Application.Current.MainWindow.DataContext as MainViewModel ?? throw new NullReferenceException();
+
     private IServiceManager _serviceManager;
     private Model.Ticket _ticket = null!;
     
-    public LookupTicket(IServiceManager serviceManager, ObjectId ticketId)
+    public LookupTicket()
     {
-        _serviceManager = serviceManager;
-        Loaded += (s, e) => LoadTicket(ticketId); 
+        Loaded += (s, _) => PrepareView();
         
         InitializeComponent();
     }
+
+    private void PrepareView()
+    {
+        _serviceManager = ViewModel.ServiceManager;
+        LoadTicket(ViewModel.TicketId);
+    }
+    
 
     private void LoadTicket(ObjectId ticketId)
     {
@@ -27,7 +37,7 @@ public partial class LookupTicket : Window
         catch (Exception e)
         {
             MessageBox.Show($"Error while retrieving ticket: {e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            Close();
+            return;
         }
         
         InitProperties();
@@ -71,7 +81,7 @@ public partial class LookupTicket : Window
             description += $"\nPriority has changed to {(Model.Ticket.Priorities)PriorityBox.SelectedIndex}\n";
         
         if((int)StatusBox.Tag != StatusBox.SelectedIndex)
-            description += $"\nStatus has changed to {(Model.Ticket.Statuses)StatusBox.SelectedIndex}\n";
+            description += $"{((int)PriorityBox.Tag != PriorityBox.SelectedIndex ? string.Empty : "\n")}Status has changed to {(Model.Ticket.Statuses)StatusBox.SelectedIndex}\n";
         
         return description;
     }
@@ -79,4 +89,6 @@ public partial class LookupTicket : Window
     private void StatusBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => _ticket.Status = (Model.Ticket.Statuses)StatusBox.SelectedIndex;
 
     private void PriorityBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => _ticket.Priority = (Model.Ticket.Priorities)PriorityBox.SelectedIndex;
+
+    private void ReturnBtn_OnClick(object sender, RoutedEventArgs e) => MainViewModel.SwitchToTickets();
 }

@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using GardenGroup.StartupHelpers;
 using Model;
+using MongoDB.Bson;
 
 namespace GardenGroup.ViewModels;
 
@@ -102,6 +103,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
         CurrentView = CurrentEmployee.UserType == Privilieges.ServiceDesk
             ? _viewModelFactory.CreateViewModel<TicketViewModel>()
             : _viewModelFactory.CreateViewModel<EmployeeTicketsViewModel>();
+
+    public void SwitchToLookupTicket(ObjectId ticketId) => 
+        CurrentView = _viewModelFactory.CreateViewModelWithParameter<LookupTicketViewModel, ObjectId>(ticketId);
 
     #endregion
 }
