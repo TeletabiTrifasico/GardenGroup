@@ -98,7 +98,7 @@
             </StackPanel>
             
             <Grid Grid.Column="1">
-                <ContentControl Content="{Binding CurrentView}" 
+                <ContentControl Content="{Binding CurrentView, Mode=TwoWay}" 
                         HorizontalAlignment="{Binding CurrentHorizontalAlignment}" 
                         VerticalAlignment="{Binding CurrentVerticalAlignment}"/>
             </Grid>

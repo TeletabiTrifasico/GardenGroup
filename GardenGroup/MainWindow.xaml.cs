@@ -22,16 +22,17 @@ namespace GardenGroup;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private MainViewModel ViewModel => DataContext as MainViewModel ?? throw new NullReferenceException();
     public MainWindow(IViewModelFactory viewModelFactory)
     {
-        DataContext = new ViewModels.MainViewModel(viewModelFactory);
+        DataContext = new MainViewModel(viewModelFactory);
         InitializeComponent();
     }
 
 
     private void ticketsBtn_Click(object sender, RoutedEventArgs e) =>
-        ((MainViewModel)DataContext).SwitchToTickets();
+        ViewModel.SwitchToTickets();
 
     private void dashboardBtn_Click(object sender, RoutedEventArgs e) =>
-        ((MainViewModel)DataContext).SwitchToDashboard();
+        ViewModel.SwitchToDashboard();
 }

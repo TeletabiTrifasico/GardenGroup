@@ -9,9 +9,5 @@ namespace GardenGroup.ViewModels;
 
 public class TicketViewModel(IServiceManager service, MainViewModel viewModel)
 {
-    public IServiceManager ServiceManager
-    {
-        get => service;
-        private set => value = service;
-    }
+    public IServiceManager ServiceManager => service;
 }
