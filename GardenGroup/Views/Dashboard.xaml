@@ -99,18 +99,25 @@
                 <!-- Unresolved Tickets by Priority (Pie Chart) -->
                 <Border Grid.Column="0" Background="White" BorderBrush="#3F51B5" BorderThickness="2" CornerRadius="5" Padding="10" Margin="10,10,10,10">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBlock Text="Unresolved Tickets by Priority" FontWeight="Bold" FontSize="16" Foreground="#3F51B5" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <!-- Title Text at the Top -->
+                        <TextBlock Text="Unresolved Tickets by Priority" 
+                   FontWeight="Bold" 
+                   FontSize="16" 
+                   Foreground="#3F51B5" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,10"/>
 
-                        <lvc:PieChart>
+                        <!-- Enlarged Pie Chart -->
+                        <lvc:PieChart Width="200" Height="185" HorizontalAlignment="Center">
                             <lvc:PieChart.Series>
                                 <lvc:PieSeries Title="Low" Values="{Binding LowPriorityPercentage}" Fill="Green"/>
                                 <lvc:PieSeries Title="Normal" Values="{Binding NormalPriorityPercentage}" Fill="Orange"/>
                                 <lvc:PieSeries Title="High" Values="{Binding HighPriorityPercentage}" Fill="Red"/>
                             </lvc:PieChart.Series>
                         </lvc:PieChart>
-
                     </StackPanel>
                 </Border>
+
                 <!-- Ticket Status Overview (Progress Bars) -->
                 <Border Grid.Column="1" Background="White" BorderBrush="#3F51B5" BorderThickness="2" CornerRadius="5" Padding="10" Margin="10,10,10,10" Grid.ColumnSpan="2">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
