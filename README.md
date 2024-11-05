@@ -1,12 +1,16 @@
-LOGIN
+### LOGIN
 
 As Service Desk:
-Username: james.andersoni
-Password: hashedpassword7
+
+- Username: james.andersoni
+
+- Password: hashedpassword7
 
 As Employee:
-Username: daniel.taylori
-Password: hashedpassword8
+
+- Username: daniel.taylori
+
+- Password: hashedpassword8
 
 ### Responsibilities:
 Bogdan Fares Abu Ghanim (709809): Servicedesk Dashboard with the appropriate charts and tickets list, Employee management and their crud opperations. additional functionality:  search through tickets
