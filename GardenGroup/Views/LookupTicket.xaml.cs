@@ -58,9 +58,14 @@ public partial class LookupTicket : UserControl
         StatusBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Statuses));
         PriorityBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Priorities));
         IncidentTypeBox.ItemsSource = Enum.GetValues(typeof(Model.Ticket.Types));
+        
 
         if (!EditMode) 
             return;
+        
+        StatusBox.SelectedIndex = 0;
+        PriorityBox.SelectedIndex = 0;
+        IncidentTypeBox.SelectedIndex = 0;
         
         TitleGrid.Visibility = Visibility.Visible;
         DeadlineGrid.Visibility = Visibility.Visible;
@@ -92,6 +97,8 @@ public partial class LookupTicket : UserControl
                     _ticket.Description = DescriptionTxt.Text += GetTicketChanges();
                     _serviceManager.TicketService.UpdateTicket(_ticket);
                     break;
+                default:
+                    return;
             }
         }
         catch (Exception)
@@ -116,7 +123,12 @@ public partial class LookupTicket : UserControl
             _ticket.IncidentType = (Model.Ticket.Types)IncidentTypeBox.SelectedIndex;
 
             _ticket.Assigned = MainViewModel.CurrentEmployee.Id;
-            _ticket.Deadline = DeadlinePicker.SelectedDate ?? throw new Exception("Deadline cannot be empty");
+            
+            var selectedDate = DeadlinePicker.SelectedDate;
+            if(selectedDate == null && selectedDate < DateTime.Today)
+                throw new Exception("Selected date is invalid or empty");
+            
+            _ticket.Deadline = selectedDate!.Value;
             _ticket.DateReported = DateTime.Now;
 
             _ticket.Description = string.IsNullOrEmpty(DescriptionTxt.Text)
