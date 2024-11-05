@@ -77,9 +77,7 @@ public class TicketsDao : BaseDao
         if(result.ModifiedCount == 0)
             throw new Exception("Failed to update ticket.");
     }
-
-    public void InsertTicket(Ticket ticket) => GetCollection<Ticket>("Tickets").InsertOne(ticket);
-
+    
     public void DeleteTicket(Ticket ticket)
     {
         var filter = FilterEq<Ticket, ObjectId>("Id", ticket.Id);
