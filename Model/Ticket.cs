@@ -18,6 +18,7 @@ public class Ticket
     {
         Open,
         InProgress,
+        Resolved,
         Closed,
     }
 

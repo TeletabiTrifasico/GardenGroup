@@ -12,99 +12,91 @@
         Height="720" Width="1280"
         MinHeight="720" MinWidth="1280"
         MaxHeight="720" MaxWidth="1280"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        Background="#F3F4F6">
 
-    <!--- Insert your view here! Use the same pattern -->
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <binds:BoolToWidthConverter x:Key="BoolToWidthConverter"/>
 
+        <!-- Data templates for each view model -->
         <DataTemplate DataType="{x:Type models:LoginViewModel}">
             <views:Login />
         </DataTemplate>
-
         <DataTemplate DataType="{x:Type models:PasswordResetViewModel}">
             <views:PasswordReset />
         </DataTemplate>
-
         <DataTemplate DataType="{x:Type models:DashboardViewModel}">
             <views:Dashboard/>
         </DataTemplate>
-
         <DataTemplate DataType="{x:Type models:TicketViewModel}">
             <views:Ticket/>
         </DataTemplate>
-
-        <DataTemplate DataType="{x:Type models:EmployeeTicketsViewModel}">
-            <views:EmployeeTickets />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type models:ManageEmployeesViewModel}">
             <views:ManageEmployees />
         </DataTemplate>
-
+        <DataTemplate DataType="{x:Type models:MyTicketsViewModel}">
+            <views:MyTickets />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type models:LookupTicketViewModel}">
             <views:LookupTicket />
         </DataTemplate>
     </Window.Resources>
+
     <Grid>
-        <Grid Height="720"
-              Width="1280"
-              HorizontalAlignment="Left">
+        <Grid Height="720" Width="1280" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{Binding IsSidebarVisible, Converter={StaticResource BoolToWidthConverter}}"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <!-- Sidebar Navigation -->
-            <StackPanel x:Name="sidebarPanel"
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        Width="auto"
-                        Height="auto"
-                        Visibility="{Binding IsSidebarVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                <Border BorderBrush="LightGray" BorderThickness="1"
-                        Height="720"
-                        Width="250">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="60"/>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="50"/>
 
-                        </Grid.RowDefinitions>
+            <!-- Sidebar Navigation Panel -->
+            <DockPanel x:Name="sidebarPanel"
+                       Grid.Column="0"
+                       Background="#2C3E50"  
+                       Width="250"
+                       Height="720"
+                       Visibility="{Binding IsSidebarVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1">
-                            <Label FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                Garden Group
-                            </Label>
+                <!-- Log Out Button -->
+                <Button x:Name="LogoutBtn"
+                        Content="Log Out"
+                        Background="Transparent"
+                        Foreground="White"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        BorderBrush="Transparent"
+                        Padding="10"
+                        HorizontalContentAlignment="Left"
+                        Click="LogoutBtn_Click"
+                        Margin="10,0,10,40" 
+                        DockPanel.Dock="Bottom"/>
+
+                <Border BorderBrush="#34495E" BorderThickness="1" Height="720" Width="250">
+                    <StackPanel>
+                        <!-- Header with Application Title -->
+                        <Border Background="#34495E" Height="60" VerticalAlignment="Top">
+                            <Label Content="Garden Group" 
+                                   FontSize="24" 
+                                   FontWeight="Bold" 
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                         </Border>
 
-                        <Grid Grid.Row="1">
-                            <Button x:Name="dashboardBtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="dashboardBtn_Click">
-                                Dashboard
-                            </Button>
-                        </Grid>
-                        <Grid Grid.Row="3">
-                            <Button x:Name="ManageEmployeesbtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="ManageEmployeesBtn_Click" 
-                                    Content="Manage Employees" RenderTransformOrigin="0.5,0.701"/>
-                        </Grid>
-                        <Grid Grid.Row="2">
-                            <Button x:Name="ticketsBtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="ticketsBtn_Click">
-                                Tickets
-                            </Button>
-                        </Grid>
-                        <Grid Grid.Row="2"/>
-                        <Button x:Name="LogoutBtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="LogoutBtn_Click" Margin="0,421,0,-421" Content="Log Out" Grid.Row="4"/>
-                    </Grid>
+                        <!-- Navigation Buttons -->
+                        <Button x:Name="dashboardBtn" Content="Dashboard" Background="Transparent" Foreground="White" FontSize="16" FontWeight="SemiBold" BorderBrush="Transparent" Padding="10" HorizontalContentAlignment="Left" Click="dashboardBtn_Click" Margin="10,15"/>
+                        <Button x:Name="ticketsBtn" Content="Tickets" Background="Transparent" Foreground="White" FontSize="16" FontWeight="SemiBold" BorderBrush="Transparent" Padding="10" HorizontalContentAlignment="Left" Click="ticketsBtn_Click" Margin="10,5"/>
+                        <Button x:Name="ManageEmployeesBtn" Content="Manage Employees" Background="Transparent" Foreground="White" FontSize="16" FontWeight="SemiBold" BorderBrush="Transparent" Padding="10" HorizontalContentAlignment="Left" Click="ManageEmployeesBtn_Click" Margin="10,5"/>
+                    </StackPanel>
                 </Border>
-            </StackPanel>
+            </DockPanel>
 
-            <Grid Grid.Column="1">
+            <!-- Main Content Area -->
+            <Grid Grid.Column="1" Background="White">
                 <ContentControl Content="{Binding CurrentView, Mode=TwoWay}" 
-                        HorizontalAlignment="{Binding CurrentHorizontalAlignment}" 
-                        VerticalAlignment="{Binding CurrentVerticalAlignment}"/>
+                                HorizontalAlignment="{Binding CurrentHorizontalAlignment}" 
+                                VerticalAlignment="{Binding CurrentVerticalAlignment}"/>
             </Grid>
         </Grid>
     </Grid>

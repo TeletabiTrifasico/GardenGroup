@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using GardenGroup.ViewModels;
+using MongoDB.Bson;
 
 namespace GardenGroup.Views;
 
@@ -17,7 +18,7 @@ public partial class Ticket : UserControl
         
     public Ticket()
     {
-        Loaded += (s, e) => PrepareView();
+        Loaded += (s, _) => PrepareView();
             
         InitializeComponent();
     }
@@ -108,4 +109,7 @@ public partial class Ticket : UserControl
         InitDatePickers();
         UpdateTicketList();
     }
+
+    private void NewTicketBtn_OnClick(object sender, RoutedEventArgs e) => 
+        MainViewModel.SwitchToLookupTicket(ObjectId.Empty);
 }

@@ -16,6 +16,8 @@ namespace Service
         public void UpdateTicketDynamic(Ticket ticket) => _ticketsDao.UpdateTicketDynamic(ticket);
 
         public void DeleteTicket(Ticket ticket) => _ticketsDao.DeleteTicket(ticket);
+        
+        public void InsertTicket(Ticket ticket) => _ticketsDao.InsertTicket(ticket);
 
         public int GetCountByStatus(int status) => _ticketsDao.GetCountByStatus(status);
         public int GetCountByPriority(int priority) => _ticketsDao.GetCountByPriority(priority);
@@ -29,6 +31,16 @@ namespace Service
 
         // Calculate count of tickets due beyond this month
         public int GetTicketsDueMoreThanMonthCount() => _ticketsDao.GetTicketsDueMoreThanMonthCount();
+        
+        public List<Ticket> GetTicketsByEmployeeId(ObjectId employeeId)
+        {
+            return _ticketsDao.GetTicketsByEmployeeId(employeeId);
+        }
+
+        public void AddTicket(Ticket ticket)
+        {
+            _ticketsDao.InsertTicket(ticket);
+        }
 
         public double GetPriorityPercentage(int priority)
         {
