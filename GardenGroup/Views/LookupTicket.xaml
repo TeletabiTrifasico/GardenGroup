@@ -7,15 +7,15 @@
         Height="600" Width="600">
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="90"/>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="0"/>
-            <RowDefinition Height="200"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Title Section -->
-        <Grid Grid.Row="0" VerticalAlignment="Center">
+        <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -33,12 +33,13 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Foreground="DarkSlateGray">Title:</Label>
+                <Label Grid.Row="0" Foreground="DarkSlateGray" HorizontalAlignment="Center">Title:</Label>
                 <TextBox Grid.Row="1"
                          x:Name="SubjectTxt"
                          Width="250"
                          Background="LightGray"
-                         Foreground="Black"/>
+                         Foreground="Black"
+                         HorizontalAlignment="Center"/>
             </Grid>
         </Grid>
 
@@ -77,28 +78,28 @@
         </Grid>
 
         <!-- Deadline and Incident Type Section -->
-        <Grid Grid.Row="2" x:Name="DeadlineGrid" Margin="0,-30,0,0" Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="150"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Foreground="DarkSlateGray">Deadline:</Label>
-            <Grid Grid.Column="0" Width="150" HorizontalAlignment="Left">
-                <DatePicker x:Name="DeadlinePicker" Background="LightGray" Foreground="Black"/>
-            </Grid>
-            <Label Grid.Column="1" Margin="10,-20,0,0" Foreground="DarkSlateGray">
-                Incident Type:
-            </Label>
-            <Grid Grid.Column="1" Height="25" Margin="10,0,0,0">
-                <ComboBox x:Name="IncidentTypeBox" Background="LightGray" Foreground="Black"/>
-            </Grid>
+        <Grid Grid.Row="2" x:Name="DeadlineGrid" HorizontalAlignment="Center" Margin="10" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-30,0,0">
+                <!-- Deadline Field -->
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <Label Foreground="DarkSlateGray" HorizontalAlignment="Center">Deadline:</Label>
+                    <DatePicker x:Name="DeadlinePicker" Background="LightGray" Foreground="Black" Width="150"/>
+                </StackPanel>
+        
+                <!-- Incident Type Field -->
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <Label Foreground="DarkSlateGray" HorizontalAlignment="Center">Incident Type:</Label>
+                    <ComboBox x:Name="IncidentTypeBox" Background="LightGray" Foreground="Black" Width="150"/>
+                </StackPanel>
+            </StackPanel>
         </Grid>
+
 
         <!-- Description Section -->
         <Grid Grid.Row="3" HorizontalAlignment="Center" Width="500">
-            <Label FontSize="15" VerticalAlignment="Top" Foreground="DarkSlateGray">Description:</Label>
+            <Label FontSize="15" VerticalAlignment="Top" Foreground="DarkSlateGray" HorizontalAlignment="Center">Description:</Label>
             <TextBox x:Name="DescriptionTxt" 
-                     Margin="0, 30,0,0" 
+                     Margin="0, 10,0,0" 
                      Width="auto"
                      TextWrapping="Wrap"
                      AcceptsReturn="True"
