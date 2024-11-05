@@ -9,10 +9,10 @@ namespace GardenGroup;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow(IViewModelFactory viewModelFactory)
+    public MainWindow(MainViewModel mainViewModel)
     {
-        DataContext = new MainViewModel(viewModelFactory);
         InitializeComponent();
+        DataContext = mainViewModel;
     }
 
     private MainViewModel ViewModel => DataContext as MainViewModel ?? throw new NullReferenceException();
