@@ -29,9 +29,17 @@
         </StackPanel>
 
         <!-- Tickets List -->
+        <Label Grid.Row="1"
+               Margin="0,-12,0,0">
+            Click on ticket to lookup
+        </Label>
         <ListBox ItemsSource="{Binding Tickets}" Grid.Row="1" Margin="0,10,0,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
+                    <Button Click="ButtonBase_OnClick" 
+                            Tag="{Binding Id}" 
+                            Background="Transparent" 
+                            BorderThickness="0"> 
                     <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5">
                         <StackPanel>
                             <TextBlock Text="{Binding Subject}" FontWeight="Bold" FontSize="16" Foreground="Black"/>
@@ -44,6 +52,7 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
+                    </Button>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

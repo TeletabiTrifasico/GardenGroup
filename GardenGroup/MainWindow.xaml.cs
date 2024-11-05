@@ -9,23 +9,22 @@ namespace GardenGroup;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private MainViewModel ViewModel => DataContext as MainViewModel ?? throw new NullReferenceException();
+    
     public MainWindow(MainViewModel mainViewModel)
     {
         InitializeComponent();
         DataContext = mainViewModel;
     }
 
-    private MainViewModel ViewModel => DataContext as MainViewModel ?? throw new NullReferenceException();
-
-
     private void LogoutBtn_Click(object sender, RoutedEventArgs e) =>
-        ((MainViewModel)DataContext).SwitchToLogout();
+        ViewModel.SwitchToLogout();
     private void ticketsBtn_Click(object sender, RoutedEventArgs e) =>
-        ((MainViewModel)DataContext).SwitchToTickets();
+        ViewModel.SwitchToTickets();
 
     private void dashboardBtn_Click(object sender, RoutedEventArgs e) =>
-        ((MainViewModel)DataContext).SwitchToDashboard();
+        ViewModel.SwitchToDashboard();
 
     private void ManageEmployeesBtn_Click(object sender, RoutedEventArgs e) =>
-        ((MainViewModel)DataContext).SwitchToManageEmployees();
+        ViewModel.SwitchToManageEmployees();
 }

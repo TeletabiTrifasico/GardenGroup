@@ -35,6 +35,7 @@ public partial class App : Application
                 services.AddTransient<LookupTicketViewModel>();
                 services.AddTransient<ManageEmployeesViewModel>();
                 services.AddTransient<IServiceManager, ServiceManager>();
+                
             }).Build();
     }
 
