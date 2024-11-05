@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using GardenGroup.ViewModels;
+using MongoDB.Bson;
+using Service;
 
 namespace GardenGroup.Views;
 
@@ -14,7 +16,8 @@ public partial class Ticket : UserControl
     private TicketViewModel ViewModel => DataContext as TicketViewModel ?? throw new NullReferenceException();
     private MainViewModel MainViewModel => Application.Current.MainWindow.DataContext as MainViewModel ?? throw new NullReferenceException();
     private List<Model.Ticket> _tickets;
-        
+    private TicketSearchHelper _ticketSearchHelper = new TicketSearchHelper();
+
     public Ticket()
     {
         Loaded += (s, e) => PrepareView();
@@ -61,6 +64,15 @@ public partial class Ticket : UserControl
 
         TicketsList.ItemsSource = data;
     }
+    private void SearchTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        string searchTerm = SearchTextBox.Text;
+
+        _tickets = _ticketSearchHelper.FilterTicketsBySearchTerm(GetTickets(), searchTerm);
+
+        UpdateTicketList();
+    }
+
 
     private void InitComboboxItem()
     {

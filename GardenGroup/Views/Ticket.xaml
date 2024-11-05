@@ -20,30 +20,44 @@
                 Service Employee Tickets
             </Label>
         </Grid>
-        <Grid Grid.Row="1"
-              VerticalAlignment="Center"
-              HorizontalAlignment="Center">
+        <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="155"/>
                 <ColumnDefinition Width="155"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="155"/>
+                <ColumnDefinition Width="155"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0"
-                  Margin="0,0,5,0">
+            <Grid Grid.Column="0" Margin="0,0,5,0">
                 <Label FontSize="10">Start Date</Label>
-                <DatePicker x:Name="StartDatePicker"
-                            SelectedDateChanged="StartDatePicker_OnSelectedDateChanged"/>    
+                <DatePicker x:Name="StartDatePicker" SelectedDateChanged="StartDatePicker_OnSelectedDateChanged"/>
             </Grid>
-            <Grid Grid.Column="1"
-                  Margin="0,0,5,0">
+            <Grid Grid.Column="1" Margin="0,0,5,0">
                 <Label FontSize="10">End Date</Label>
-                <DatePicker x:Name="EndDatePicker" 
-                            SelectedDateChanged="EndDatePicker_OnSelectedDateChanged"/>    
+                <DatePicker x:Name="EndDatePicker" SelectedDateChanged="EndDatePicker_OnSelectedDateChanged"/>
             </Grid>
-            <Grid Grid.Column="2">
-                <Button x:Name="ResetDatesBtn" Click="ResetDatesBtn_OnClick">Reset dates</Button>
+            <Grid Grid.Column="2" Margin="0,0,5,0">
+                <Button x:Name="ResetDatesBtn" Click="ResetDatesBtn_OnClick">
+                    Reset dates
+                </Button>
             </Grid>
+            <Grid Grid.Column="3">
+                <Button x:Name="NewTicketBtn" Click="NewTicketBtn_OnClick">
+                    Add new Ticket
+                </Button>
+            </Grid>
+            
+            <Grid Grid.Column="4" Margin="0,0,5,0">
+                <TextBox x:Name="SearchTextBox" 
+             Width="180" 
+             Height="25" 
+             VerticalAlignment="Center" 
+             Text="Search tickets" 
+             TextChanged="SearchTextBox_OnTextChanged" />
+            </Grid>
+
         </Grid>
+
         <Grid Grid.Row="2">
             <ListView x:Name="TicketsList"
                       SelectionChanged="TicketsList_OnSelectionChanged"
