@@ -160,11 +160,7 @@
                 </Border>
             </Grid>
         </Grid>
-        <!-- Sorting Buttons and Ticket List Section -->
-        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,10,0,0">
-            <!-- Sort Buttons -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10"/>
-        </StackPanel>
+
 
 
         <!-- Scrollable Ticket List Section -->
@@ -246,11 +242,5 @@
                 </ItemsControl>
             </ScrollViewer>
         </Border>
-        <Button Content="Sort High to Low" Command="{Binding SortByPriorityHighToLowCommand}" 
-                       Background="#3F51B5" Foreground="White" Padding="10,5"
-                       FontWeight="Bold" BorderBrush="#3F51B5" BorderThickness="1" Margin="352,343,487,0" Grid.Row="1" />
-        <Button Content="Sort Low to High" Command="{Binding SortByPriorityLowToHighCommand}" 
-                       Background="#3F51B5" Foreground="White" Padding="10,5"
-                       FontWeight="Bold" BorderBrush="#3F51B5" BorderThickness="1" Margin="490,343,349,0" Grid.Row="1" />
     </Grid>
 </UserControl>

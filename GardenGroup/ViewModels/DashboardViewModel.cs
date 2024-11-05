@@ -17,13 +17,10 @@ namespace GardenGroup.ViewModels
         private readonly TicketService _ticketService;
         private readonly MainViewModel _mainViewModel;
         private MainViewModel MainViewModel => Application.Current.MainWindow?.DataContext as MainViewModel ?? throw new NullReferenceException("MainViewModel is null");
-        public ICommand SortByPriorityHighToLowCommand { get; }
-        public ICommand SortByPriorityLowToHighCommand { get; }
 
         public DashboardViewModel(IServiceManager serviceManager, MainViewModel mainViewModel)
         {
-            SortByPriorityHighToLowCommand = new RelayCommand(SortTicketsByPriorityHighToLow);
-            SortByPriorityLowToHighCommand = new RelayCommand(SortTicketsByPriorityLowToHigh);
+
 
             _ticketService = serviceManager.TicketService;
             _mainViewModel = mainViewModel;
@@ -39,27 +36,7 @@ namespace GardenGroup.ViewModels
             LoadAllTickets();
         }
 
-        private void SortTicketsByPriorityHighToLow(object parameter)
-        {
-            // Sort tickets by priority from High to Low
-            var sortedTickets = AllTickets.OrderByDescending(ticket => ticket.Priority).ToList();
-            AllTickets.Clear();
-            foreach (var ticket in sortedTickets)
-            {
-                AllTickets.Add(ticket);
-            }
-        }
 
-        private void SortTicketsByPriorityLowToHigh(object parameter)
-        {
-            // Sort tickets by priority from Low to High
-            var sortedTickets = AllTickets.OrderBy(ticket => ticket.Priority).ToList();
-            AllTickets.Clear();
-            foreach (var ticket in sortedTickets)
-            {
-                AllTickets.Add(ticket);
-            }
-        }
         public Employee GetCurrentEmployee()
         {
             return MainViewModel.CurrentEmployee ?? throw new NullReferenceException("CurrentEmployee is null");
