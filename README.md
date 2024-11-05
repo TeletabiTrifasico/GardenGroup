@@ -1,11 +1,15 @@
 LOGIN
 
 As Service Desk:
+
 Username: james.andersoni
+
 Password: hashedpassword7
 
 As Employee:
+
 Username: daniel.taylori
+
 Password: hashedpassword8
 
 ### Responsibilities:
