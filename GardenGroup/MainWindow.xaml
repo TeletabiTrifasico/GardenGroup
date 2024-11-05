@@ -1,4 +1,4 @@
-﻿<Window x:Class="GardenGroup.MainWindow"
+﻿ <Window x:Class="GardenGroup.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -22,11 +22,11 @@
         <DataTemplate DataType="{x:Type models:LoginViewModel}">
             <views:Login />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type models:PasswordResetViewModel}">
             <views:PasswordReset />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type models:DashboardViewModel}">
             <views:Dashboard/>
         </DataTemplate>
@@ -38,6 +38,12 @@
         <DataTemplate DataType="{x:Type models:EmployeeTicketsViewModel}">
             <views:EmployeeTickets />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type models:ManageEmployeesViewModel}">
+            <views:ManageEmployees />
+        </DataTemplate>
+
+
         
         <DataTemplate DataType="{x:Type models:LookupTicketViewModel}">
             <views:LookupTicket />
@@ -51,8 +57,7 @@
                 <ColumnDefinition Width="{Binding IsSidebarVisible, Converter={StaticResource BoolToWidthConverter}}"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-            <!-- Top Navigation Bar -->
+            <!-- Sidebar Navigation -->
             <StackPanel x:Name="sidebarPanel"
                         Grid.Column="0"
                         HorizontalAlignment="Left"
@@ -60,47 +65,45 @@
                         Height="auto"
                         Visibility="{Binding IsSidebarVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Border BorderBrush="LightGray" BorderThickness="1"
-                            Height="720"
-                            Width="250">
+                        Height="720"
+                        Width="250">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition Height="50"/>
                             <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+
                         </Grid.RowDefinitions>
 
-                        <Border Grid.Row="0"
-                                    BorderBrush="LightGray"
-                                    BorderThickness="1">
-                            <Label FontSize="30"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center">
+                        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1">
+                            <Label FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 Garden Group
                             </Label>
                         </Border>
 
                         <Grid Grid.Row="1">
-                            <Button x:Name="dashboardBtn"
-                                        Background="Transparent"
-                                        FontSize="15"
-                                        BorderThickness="0"
-                                        Click="dashboardBtn_Click">
+                            <Button x:Name="dashboardBtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="dashboardBtn_Click">
                                 Dashboard
                             </Button>
                         </Grid>
+                        <Grid Grid.Row="3">
+                            <Button x:Name="ManageEmployeesbtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="ManageEmployeesBtn_Click" 
+                                    Content="Manage Employees" RenderTransformOrigin="0.5,0.701"/>
+                        </Grid>
                         <Grid Grid.Row="2">
-                            <Button x:Name="ticketsBtn"
-                                        Background="Transparent"
-                                        FontSize="15"
-                                        BorderThickness="0"
-                                        Click="ticketsBtn_Click">
+                            <Button x:Name="ticketsBtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="ticketsBtn_Click">
                                 Tickets
                             </Button>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Button x:Name="LogoutBtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="LogoutBtn_Click" Margin="2,543,-2,-543" Content="Log Out"/>
                         </Grid>
                     </Grid>
                 </Border>
             </StackPanel>
-            
+
             <Grid Grid.Column="1">
                 <ContentControl Content="{Binding CurrentView, Mode=TwoWay}" 
                         HorizontalAlignment="{Binding CurrentHorizontalAlignment}" 

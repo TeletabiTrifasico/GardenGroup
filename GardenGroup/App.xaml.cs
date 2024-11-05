@@ -35,6 +35,21 @@ public partial class App : Application
                 services.AddTransient<IServiceManager, ServiceManager>();
             }).Build();
     }
+                    // Register all view models
+                    // Add new viewmodels here
+                    services.AddTransient<MainViewModel>();
+                    services.AddTransient<LoginViewModel>();
+                    services.AddTransient<PasswordResetViewModel>();
+                    services.AddTransient<DashboardViewModel>();
+                    services.AddTransient<TicketViewModel>();
+                    services.AddTransient<EmployeeTicketsViewModel>();
+                    services.AddTransient<ManageEmployeesViewModel>();
+
+
+
+                    services.AddTransient<IServiceManager, ServiceManager>();
+                }).Build();
+        }
 
     protected override async void OnStartup(StartupEventArgs e)
     {
@@ -45,10 +60,27 @@ public partial class App : Application
             
         base.OnStartup(e);
     }
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            await AppHost!.StartAsync();
+
+            var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
+            startupForm.Show();
+
+            base.OnStartup(e);
+        }
 
     protected override async void OnExit(ExitEventArgs e)
     {
         await AppHost!.StopAsync();
         base.OnExit(e);
     }
+}
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            await AppHost!.StopAsync();
+            base.OnExit(e);
+        }
+    }
+
 }
