@@ -43,8 +43,6 @@
             <views:ManageEmployees />
         </DataTemplate>
 
-
-
         <DataTemplate DataType="{x:Type models:LookupTicketViewModel}">
             <views:LookupTicket />
         </DataTemplate>

@@ -26,6 +26,28 @@ namespace GardenGroup.ViewModels
             }
         }
 
+        private string _username;
+        public string Username
+        {
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged(nameof(Username));
+            }
+        }
+
+        private string _password;
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
         private bool _isAddEditPopupOpen;
         public bool IsAddEditPopupOpen
         {
@@ -131,15 +153,18 @@ namespace GardenGroup.ViewModels
         private void AddEmployee(object parameter)
         {
             SelectedEmployee = new Employee();
+            Username = string.Empty;
+            Password = string.Empty;
             IsEditing = false;
             IsAddEditPopupOpen = true;
         }
-
         private void EditEmployee(object parameter)
         {
             if (parameter is EmployeeViewModel employeeToEdit)
             {
                 SelectedEmployee = employeeToEdit.Employee;
+                Username = employeeToEdit.Employee.Username;
+                Password = string.Empty;
                 IsEditing = true;
                 IsAddEditPopupOpen = true;
             }
@@ -172,6 +197,12 @@ namespace GardenGroup.ViewModels
                 return;
             }
 
+            SelectedEmployee.Username = Username;
+            if (!string.IsNullOrEmpty(Password))
+            {
+                SelectedEmployee.Password = HashPassword(Password);
+            }
+
             if (IsEditing)
             {
                 _serviceManager.EmployeeService.UpdateEmployee(SelectedEmployee);
@@ -180,9 +211,16 @@ namespace GardenGroup.ViewModels
             {
                 _serviceManager.EmployeeService.AddEmployee(SelectedEmployee);
             }
+
             IsAddEditPopupOpen = false;
             LoadEmployees();
         }
+
+        private static string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
 
         private void Cancel(object parameter)
         {

@@ -54,6 +54,19 @@
                 <StackPanel>
                     <TextBlock Text="{Binding PopupTitle}" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
 
+                    <!-- Username -->
+                    <StackPanel Margin="0,5">
+                        <TextBlock Text="Username" FontSize="14" FontWeight="SemiBold" Foreground="Gray"/>
+                        <TextBox Text="{Binding Username}" />
+                    </StackPanel>
+
+                    <!-- Password -->
+                    <StackPanel Margin="0,5">
+                        <TextBlock Text="Password" FontSize="14" FontWeight="SemiBold" Foreground="Gray"/>
+                        <PasswordBox PasswordChanged="OnPasswordChanged" />
+                    </StackPanel>
+
+
                     <!-- First Name -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="First Name" FontSize="14" FontWeight="SemiBold" Foreground="Gray"/>
@@ -70,16 +83,14 @@
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Email" FontSize="14" FontWeight="SemiBold" Foreground="Gray"/>
                         <TextBox Text="{Binding SelectedEmployee.Email}" />
-                        <TextBlock Text="{Binding EmailError}" Foreground="Red" FontSize="12"
-                                   Visibility="{Binding IsEmailErrorVisible}"/>
+                        <TextBlock Text="{Binding EmailError}" Foreground="Red" FontSize="12" Visibility="{Binding IsEmailErrorVisible}"/>
                     </StackPanel>
 
                     <!-- Phone with Error Message -->
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Phone" FontSize="14" FontWeight="SemiBold" Foreground="Gray"/>
                         <TextBox Text="{Binding SelectedEmployee.Phone}" />
-                        <TextBlock Text="{Binding PhoneError}" Foreground="Red" FontSize="12"
-                                   Visibility="{Binding IsPhoneErrorVisible}"/>
+                        <TextBlock Text="{Binding PhoneError}" Foreground="Red" FontSize="12" Visibility="{Binding IsPhoneErrorVisible}"/>
                     </StackPanel>
 
                     <!-- User Type -->
