@@ -14,11 +14,14 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
         <!-- Header Section -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <TextBlock Text="Welcome, John Smith" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Background="LightGray" Height="25" VerticalAlignment="Center" Margin="10,0">
+            <TextBlock FontSize="12" FontWeight="Bold" Text="{Binding UserName}" VerticalAlignment="Center" Margin="10,0"/>
+            <TextBlock FontSize="12" Text=" - " VerticalAlignment="Center"/>
+            <TextBlock FontSize="12" Text="{Binding UserRole}" VerticalAlignment="Center" Margin="10,0"/>
         </StackPanel>
+
+
 
         <!-- Metric Boxes and Charts Section -->
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,0">

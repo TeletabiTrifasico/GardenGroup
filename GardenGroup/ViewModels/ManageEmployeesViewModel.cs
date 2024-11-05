@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -13,8 +15,8 @@ namespace GardenGroup.ViewModels
     {
         private readonly IServiceManager _serviceManager;
 
-        private ObservableCollection<Employee> _employees;
-        public ObservableCollection<Employee> Employees
+        private ObservableCollection<EmployeeViewModel> _employees;
+        public ObservableCollection<EmployeeViewModel> Employees
         {
             get => _employees;
             private set
@@ -58,7 +60,6 @@ namespace GardenGroup.ViewModels
             }
         }
 
-        // Popup title property to reflect Add or Edit state
         public string PopupTitle => IsEditing ? "Edit Employee" : "Add Employee";
 
         private Employee _selectedEmployee;
@@ -69,25 +70,9 @@ namespace GardenGroup.ViewModels
             {
                 _selectedEmployee = value;
                 OnPropertyChanged(nameof(SelectedEmployee));
-                OnPropertyChanged(nameof(UserTypeDisplay));
             }
         }
 
-        // Display-friendly user type based on SelectedEmployee's UserType as an int
-        public string UserTypeDisplay => SelectedEmployee != null ? GetUserTypeDisplay(SelectedEmployee.UserType) : "Unknown Role";
-
-        // Method to convert the integer user_type value to a display string
-        private string GetUserTypeDisplay(Privilieges userType)
-        {
-            return userType switch
-            {
-                Privilieges.NormalUser => "Normal User",
-                Privilieges.ServiceDesk => "Service Desk",
-                _ => "Unknown Role"
-            };
-        }
-
-        // Validation properties
         private string _emailError;
         public string EmailError
         {
@@ -112,11 +97,9 @@ namespace GardenGroup.ViewModels
             }
         }
 
-        // Visibility properties for validation messages
         public Visibility IsEmailErrorVisible => string.IsNullOrEmpty(EmailError) ? Visibility.Collapsed : Visibility.Visible;
         public Visibility IsPhoneErrorVisible => string.IsNullOrEmpty(PhoneError) ? Visibility.Collapsed : Visibility.Visible;
 
-        // Commands for CRUD operations
         public ICommand AddEmployeeCommand { get; }
         public ICommand EditEmployeeCommand { get; }
         public ICommand DeleteEmployeeCommand { get; }
@@ -129,7 +112,6 @@ namespace GardenGroup.ViewModels
             _serviceManager = serviceManager;
             LoadEmployees();
 
-            // Initialize commands with respective methods
             AddEmployeeCommand = new RelayCommand(AddEmployee);
             EditEmployeeCommand = new RelayCommand(EditEmployee, CanEditOrDeleteEmployee);
             DeleteEmployeeCommand = new RelayCommand(OpenDeleteConfirmation, CanEditOrDeleteEmployee);
@@ -140,7 +122,10 @@ namespace GardenGroup.ViewModels
 
         private void LoadEmployees()
         {
-            Employees = new ObservableCollection<Employee>(_serviceManager.EmployeeService.GetEmployees());
+            var employeeModels = _serviceManager.EmployeeService.GetEmployees();
+            Employees = new ObservableCollection<EmployeeViewModel>(
+                employeeModels.Select(e => new EmployeeViewModel(e))
+            );
         }
 
         private void AddEmployee(object parameter)
@@ -152,9 +137,9 @@ namespace GardenGroup.ViewModels
 
         private void EditEmployee(object parameter)
         {
-            if (parameter is Employee employeeToEdit)
+            if (parameter is EmployeeViewModel employeeToEdit)
             {
-                SelectedEmployee = employeeToEdit;
+                SelectedEmployee = employeeToEdit.Employee;
                 IsEditing = true;
                 IsAddEditPopupOpen = true;
             }
@@ -165,15 +150,13 @@ namespace GardenGroup.ViewModels
             EmailError = string.Empty;
             PhoneError = string.Empty;
 
-            // Email validation
             var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
             if (!emailRegex.IsMatch(SelectedEmployee.Email))
             {
                 EmailError = "Invalid email format. Example: example@domain.com";
             }
 
-            // Phone validation
-            var phoneRegex = new Regex(@"^\+?[1-9]\d{1,14}$"); // E.164 format
+            var phoneRegex = new Regex(@"^\+?[1-9]\d{1,14}$");
             if (!phoneRegex.IsMatch(SelectedEmployee.Phone))
             {
                 PhoneError = "Invalid phone format. Example: +1234567890";
@@ -198,7 +181,7 @@ namespace GardenGroup.ViewModels
                 _serviceManager.EmployeeService.AddEmployee(SelectedEmployee);
             }
             IsAddEditPopupOpen = false;
-            LoadEmployees(); // Refresh the list
+            LoadEmployees();
         }
 
         private void Cancel(object parameter)
@@ -210,9 +193,9 @@ namespace GardenGroup.ViewModels
 
         private void OpenDeleteConfirmation(object parameter)
         {
-            if (parameter is Employee employeeToDelete)
+            if (parameter is EmployeeViewModel employeeToDelete)
             {
-                SelectedEmployee = employeeToDelete;
+                SelectedEmployee = employeeToDelete.Employee;
                 IsDeleteConfirmationOpen = true;
             }
         }
@@ -222,18 +205,40 @@ namespace GardenGroup.ViewModels
             if (SelectedEmployee != null)
             {
                 _serviceManager.EmployeeService.DeleteEmployee(SelectedEmployee.Id);
-                LoadEmployees(); // Refresh the list
+                LoadEmployees();
             }
             IsDeleteConfirmationOpen = false;
             SelectedEmployee = null;
         }
 
-        private bool CanEditOrDeleteEmployee(object parameter) => parameter is Employee;
+        private bool CanEditOrDeleteEmployee(object parameter) => parameter is EmployeeViewModel;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        // Nested EmployeeViewModel class to handle display logic for roles
+        public class EmployeeViewModel
+        {
+            public Employee Employee { get; }
+            public string UserTypeDisplay => GetUserTypeDisplay(Employee.UserType);
+
+            public EmployeeViewModel(Employee employee)
+            {
+                Employee = employee;
+            }
+
+            private string GetUserTypeDisplay(Privilieges userType)
+            {
+                return userType switch
+                {
+                    Privilieges.NormalUser => "Normal User",
+                    Privilieges.ServiceDesk => "Service Desk",
+                    _ => "Unknown Role"
+                };
+            }
         }
     }
 }

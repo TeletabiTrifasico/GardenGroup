@@ -7,18 +7,21 @@ using Model;
 using Service;
 using LiveCharts;
 using LiveCharts.Wpf;
+using System.Windows;
 
 namespace GardenGroup.ViewModels
 {
     public class DashboardViewModel : INotifyPropertyChanged
     {
         private readonly TicketService _ticketService;
+        private readonly MainViewModel _mainViewModel;
+        private MainViewModel MainViewModel => Application.Current.MainWindow?.DataContext as MainViewModel ?? throw new NullReferenceException("MainViewModel is null");
 
-        public DashboardViewModel(IServiceManager serviceManager)
+        public DashboardViewModel(IServiceManager serviceManager, MainViewModel mainViewModel)
         {
             _ticketService = serviceManager.TicketService;
+            _mainViewModel = mainViewModel;
 
-            // Initialize collections to avoid null reference issues
             PriorityData = new ObservableCollection<PriorityModel>();
             AllTickets = new ObservableCollection<Ticket>();
 
@@ -26,10 +29,18 @@ namespace GardenGroup.ViewModels
             NormalPriorityPercentage = new ChartValues<double> { 0 };
             HighPriorityPercentage = new ChartValues<double> { 0 };
 
-            // Load data for dashboard
             LoadDashboardData();
             LoadAllTickets();
         }
+
+        public Employee GetCurrentEmployee()
+        {
+            return MainViewModel.CurrentEmployee ?? throw new NullReferenceException("CurrentEmployee is null");
+        }
+        public string UserName => MainViewModel.CurrentEmployee?.Firstname ?? "Unknown";
+        public string UserRole => MainViewModel.CurrentEmployee?.UserType.ToString() ?? "Role not available";
+
+
 
         // Metric Boxes Properties
         private int _overdueTasks;
