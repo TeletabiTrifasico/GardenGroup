@@ -18,7 +18,7 @@ public partial class Ticket : UserControl
         
     public Ticket()
     {
-        Loaded += (s, e) => PrepareView();
+        Loaded += (s, _) => PrepareView();
             
         InitializeComponent();
     }

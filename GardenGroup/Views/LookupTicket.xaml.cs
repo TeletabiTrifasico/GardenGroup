@@ -117,18 +117,16 @@ public partial class LookupTicket : UserControl
             _ticket.Subject = string.IsNullOrEmpty(SubjectTxt.Text) 
                 ? throw new Exception("Subject cannot be empty") 
                 : SubjectTxt.Text;
-
-            _ticket.Priority = (Model.Ticket.Priorities)PriorityBox.SelectedIndex;
-            _ticket.Status = (Model.Ticket.Statuses)StatusBox.SelectedIndex;
+            
             _ticket.IncidentType = (Model.Ticket.Types)IncidentTypeBox.SelectedIndex;
 
             _ticket.Assigned = MainViewModel.CurrentEmployee.Id;
             
             var selectedDate = DeadlinePicker.SelectedDate;
-            if(selectedDate == null && selectedDate < DateTime.Today)
+            if(selectedDate == null || selectedDate < DateTime.Today)
                 throw new Exception("Selected date is invalid or empty");
             
-            _ticket.Deadline = selectedDate!.Value;
+            _ticket.Deadline = selectedDate.Value;
             _ticket.DateReported = DateTime.Now;
 
             _ticket.Description = string.IsNullOrEmpty(DescriptionTxt.Text)
@@ -157,9 +155,12 @@ public partial class LookupTicket : UserControl
         return description;
     }
 
-    private void StatusBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => _ticket.Status = (Model.Ticket.Statuses)StatusBox.SelectedIndex;
+    private void StatusBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) 
+        => _ticket.Status = (Model.Ticket.Statuses)StatusBox.SelectedIndex;
 
-    private void PriorityBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) => _ticket.Priority = (Model.Ticket.Priorities)PriorityBox.SelectedIndex;
+    private void PriorityBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e) 
+        => _ticket.Priority = (Model.Ticket.Priorities)PriorityBox.SelectedIndex;
 
-    private void ReturnBtn_OnClick(object sender, RoutedEventArgs e) => MainViewModel.SwitchToTickets();
+    private void ReturnBtn_OnClick(object sender, RoutedEventArgs e) 
+        => MainViewModel.SwitchToTickets();
 }
