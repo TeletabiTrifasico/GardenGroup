@@ -18,13 +18,14 @@ public partial class MainWindow : Window
     private MainViewModel ViewModel => DataContext as MainViewModel ?? throw new NullReferenceException();
 
 
-    private void ticketsBtn_Click(object sender, RoutedEventArgs e)
-    {
-        ViewModel.SwitchToTickets();
-    }
+    private void LogoutBtn_Click(object sender, RoutedEventArgs e) =>
+        ((MainViewModel)DataContext).SwitchToLogout();
+    private void ticketsBtn_Click(object sender, RoutedEventArgs e) =>
+        ((MainViewModel)DataContext).SwitchToTickets();
 
-    private void dashboardBtn_Click(object sender, RoutedEventArgs e)
-    {
-        ViewModel.SwitchToDashboard();
-    }
+    private void dashboardBtn_Click(object sender, RoutedEventArgs e) =>
+        ((MainViewModel)DataContext).SwitchToDashboard();
+
+    private void ManageEmployeesBtn_Click(object sender, RoutedEventArgs e) =>
+        ((MainViewModel)DataContext).SwitchToManageEmployees();
 }
