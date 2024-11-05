@@ -16,6 +16,8 @@ namespace Service
         public void UpdateTicketDynamic(Ticket ticket) => _ticketsDao.UpdateTicketDynamic(ticket);
 
         public void DeleteTicket(Ticket ticket) => _ticketsDao.DeleteTicket(ticket);
+        
+        public void InsertTicket(Ticket ticket) => _ticketsDao.InsertTicket(ticket);
 
         public int GetCountByStatus(int status) => _ticketsDao.GetCountByStatus(status);
         public int GetCountByPriority(int priority) => _ticketsDao.GetCountByPriority(priority);
