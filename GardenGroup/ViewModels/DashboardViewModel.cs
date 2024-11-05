@@ -157,10 +157,10 @@ namespace GardenGroup.ViewModels
         {
             var totalTickets = AllTicketsCount > 0 ? AllTicketsCount : 1; // Avoid division by zero
 
-            // Update ChartValues to reflect new data
-            LowPriorityPercentage[0] = _ticketService.GetCountByPriority((int)Ticket.Priorities.Low) / (double)totalTickets * 100;
-            NormalPriorityPercentage[0] = _ticketService.GetCountByPriority((int)Ticket.Priorities.Normal) / (double)totalTickets * 100;
-            HighPriorityPercentage[0] = _ticketService.GetCountByPriority((int)Ticket.Priorities.High) / (double)totalTickets * 100;
+            // Update ChartValues to reflect new data and got them rounded to 2 decimal places
+            LowPriorityPercentage[0] = Math.Round(_ticketService.GetCountByPriority((int)Ticket.Priorities.Low) / (float)totalTickets * 100, 2);
+            NormalPriorityPercentage[0] = Math.Round(_ticketService.GetCountByPriority((int)Ticket.Priorities.Normal) / (float)totalTickets * 100, 2);
+            HighPriorityPercentage[0] = Math.Round(_ticketService.GetCountByPriority((int)Ticket.Priorities.High) / (float)totalTickets * 100, 2);
 
             // Notify the view of the changes
             OnPropertyChanged(nameof(LowPriorityPercentage));
