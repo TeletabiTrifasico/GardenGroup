@@ -29,6 +29,8 @@ public partial class MainWindow : Window
     }
 
 
+    private void LogoutBtn_Click(object sender, RoutedEventArgs e) =>
+        ((MainViewModel)DataContext).SwitchToLogout();
     private void ticketsBtn_Click(object sender, RoutedEventArgs e) =>
         ((MainViewModel)DataContext).SwitchToTickets();
 

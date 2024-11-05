@@ -100,7 +100,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public void SwitchToDashboard() => CurrentView = _viewModelFactory.CreateViewModel<DashboardViewModel>();
     public void SwitchToManageEmployees() => CurrentView = _viewModelFactory.CreateViewModel<ManageEmployeesViewModel>();
 
-
     public void SwitchToTickets() =>
         CurrentView = CurrentEmployee.UserType == Privilieges.ServiceDesk
             ? _viewModelFactory.CreateViewModel<TicketViewModel>()
