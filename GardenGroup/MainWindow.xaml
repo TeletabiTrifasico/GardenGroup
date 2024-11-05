@@ -13,8 +13,7 @@
         MinHeight="720" MinWidth="1280"
         MaxHeight="720" MaxWidth="1280"
         SizeToContent="WidthAndHeight">
-
-    <!--- Insert your view here! Use the same pattern -->
+    
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <binds:BoolToWidthConverter x:Key="BoolToWidthConverter"/>
@@ -35,20 +34,19 @@
             <views:Ticket/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type models:EmployeeTicketsViewModel}">
-            <views:EmployeeTickets />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type models:ManageEmployeesViewModel}">
             <views:ManageEmployees />
         </DataTemplate>
 
-
+        <DataTemplate DataType="{x:Type models:MyTicketsViewModel}">
+            <views:MyTickets />
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:LookupTicketViewModel}">
             <views:LookupTicket />
         </DataTemplate>
     </Window.Resources>
+
     <Grid>
         <Grid Height="720"
               Width="1280"
@@ -57,12 +55,13 @@
                 <ColumnDefinition Width="{Binding IsSidebarVisible, Converter={StaticResource BoolToWidthConverter}}"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <!-- Sidebar Navigation -->
+
+            <!-- Sidebar Navigation Panel -->
             <StackPanel x:Name="sidebarPanel"
                         Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        Width="auto"
-                        Height="auto"
+                        Background="#2C3E50"  
+                        Width="250"
+                        Height="720"
                         Visibility="{Binding IsSidebarVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Border BorderBrush="LightGray" BorderThickness="1"
                         Height="720"
@@ -101,12 +100,42 @@
                         <Button x:Name="LogoutBtn" Background="Transparent" FontSize="15" BorderThickness="0" Click="LogoutBtn_Click" Margin="0,421,0,-421" Content="Log Out" Grid.Row="4"/>
                     </Grid>
                 </Border>
+
+                <!-- Navigation Buttons -->
+                <StackPanel Margin="0,20,0,0">
+                    <Button x:Name="dashboardBtn"
+                            Content="Dashboard"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Foreground="White"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Padding="10"
+                            HorizontalContentAlignment="Left"
+                            Click="dashboardBtn_Click"
+                            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                            Margin="10,5"/>
+
+                    <Button x:Name="ticketsBtn"
+                            Content="Tickets"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Foreground="White"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Padding="10"
+                            HorizontalContentAlignment="Left"
+                            Click="ticketsBtn_Click"
+                            Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                            Margin="10,5"/>
+                </StackPanel>
             </StackPanel>
 
+            <!-- Main Content Area -->
             <Grid Grid.Column="1">
                 <ContentControl Content="{Binding CurrentView, Mode=TwoWay}" 
-                        HorizontalAlignment="{Binding CurrentHorizontalAlignment}" 
-                        VerticalAlignment="{Binding CurrentVerticalAlignment}"/>
+                                HorizontalAlignment="{Binding CurrentHorizontalAlignment}" 
+                                VerticalAlignment="{Binding CurrentVerticalAlignment}"/>
             </Grid>
         </Grid>
     </Grid>

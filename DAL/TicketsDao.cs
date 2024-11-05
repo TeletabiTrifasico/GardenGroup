@@ -146,4 +146,16 @@ public class TicketsDao : BaseDao
         var filter = Builders<BsonDocument>.Filter.Gte("deadline", startOfNextMonth);
         return (int)ticketsCollection.CountDocuments(filter);
     }
+    public void InsertTicket(Ticket ticket)
+    {
+        var ticketsCollection = GetCollection<Ticket>("Tickets");
+        ticketsCollection.InsertOne(ticket);
+    }
+    
+    public List<Ticket> GetTicketsByEmployeeId(ObjectId employeeId)
+    {
+        var filter = Builders<Ticket>.Filter.Eq(t => t.Assigned, employeeId);
+        return GetCollection<Ticket>("Tickets").Find(filter).ToList();
+    }
+
 }

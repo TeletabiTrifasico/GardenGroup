@@ -21,6 +21,7 @@ public partial class App : Application
             {
                 services.AddSingleton<MainWindow>();
                 services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+                services.AddSingleton<MainViewModel>();
 
                 // Register all view models
                 // Add new viewmodels here
@@ -29,11 +30,10 @@ public partial class App : Application
                 services.AddTransient<PasswordResetViewModel>();
                 services.AddTransient<DashboardViewModel>();
                 services.AddTransient<TicketViewModel>();
-                services.AddTransient<EmployeeTicketsViewModel>();
+                services.AddTransient<MyTicketsViewModel>();
+                services.AddTransient<TicketSubmissionViewModel>();
                 services.AddTransient<LookupTicketViewModel>();
                 services.AddTransient<ManageEmployeesViewModel>();
-
-
                 services.AddTransient<IServiceManager, ServiceManager>();
             }).Build();
     }

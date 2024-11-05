@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using GardenGroup.StartupHelpers;
+using GardenGroup.Views;
 using Model;
 using MongoDB.Bson;
+using Service;
 
 namespace GardenGroup.ViewModels;
 
@@ -14,11 +17,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private readonly IViewModelFactory _viewModelFactory;
     private object _currentView;
     private bool _isSidebarVisible;
+    private readonly IServiceManager _serviceManager;
 
-    public MainViewModel(IViewModelFactory viewModelFactory)
+    public MainViewModel(IViewModelFactory viewModelFactory, IServiceManager serviceManager)
     {
         _viewModelFactory = viewModelFactory;
         IsSidebarVisible = false;
+        _serviceManager = serviceManager;
 
         CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel, MainViewModel>(this);
     }
@@ -101,11 +106,30 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public void SwitchToDashboard() => CurrentView = _viewModelFactory.CreateViewModel<DashboardViewModel>();
     public void SwitchToManageEmployees() => CurrentView = _viewModelFactory.CreateViewModel<ManageEmployeesViewModel>();
 
-    public void SwitchToTickets() =>
-        CurrentView = CurrentEmployee.UserType == Privilieges.ServiceDesk
-            ? _viewModelFactory.CreateViewModel<TicketViewModel>()
-            : _viewModelFactory.CreateViewModel<EmployeeTicketsViewModel>();
+    public void SwitchToTickets()
+    {
+        if (CurrentEmployee == null)
+        {
+            throw new InvalidOperationException("CurrentEmployee is not set.");
+        }
 
+        if (CurrentEmployee.UserType == Privilieges.ServiceDesk)
+        {
+            // Load TicketViewModel for service desk users
+            CurrentView = _viewModelFactory.CreateViewModel<TicketViewModel>();
+        }
+        else
+        {
+            // Load MyTicketsViewModel for regular users
+            var myTicketsViewModel = new MyTicketsViewModel(_serviceManager, this);
+            var myTicketsView = new MyTickets(_serviceManager, this)
+            {
+                DataContext = myTicketsViewModel
+            };
+            CurrentView = myTicketsView;
+        }
+    }
+    
     public void SwitchToLookupTicket(ObjectId ticketId) => 
         CurrentView = _viewModelFactory.CreateViewModelWithParameter<LookupTicketViewModel, ObjectId>(ticketId);
 
