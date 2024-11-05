@@ -34,9 +34,13 @@ public partial class Ticket : UserControl
         UpdateTicketList();
     }
 
-    private void UpdateTicketList()
+    private void UpdateTicketList(List<Model.Ticket> tickets = null)
     {
-        var data = _tickets;
+        var data = tickets;
+        if(data == null)
+            data = _tickets;
+        
+        //var data = _tickets;
         data = data.OrderByDescending(x => x.Status == Model.Ticket.Statuses.Open).ToList();
 
         try
@@ -112,4 +116,14 @@ public partial class Ticket : UserControl
 
     private void NewTicketBtn_OnClick(object sender, RoutedEventArgs e) => 
         MainViewModel.SwitchToLookupTicket(ObjectId.Empty);
+
+    // Bogdan's part
+    private void SearchTxt_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        var searchTxt = SearchTxt.Text;
+        var ticketSearchHelper = new TicketSearchHelper();
+        var data = ticketSearchHelper.FilterTicketsBySearchTerm(_tickets, searchTxt);
+        
+        UpdateTicketList(data);
+    }
 }

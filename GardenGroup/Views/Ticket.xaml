@@ -28,6 +28,7 @@
                 <ColumnDefinition Width="155"/>
                 <ColumnDefinition Width="155"/>
                 <ColumnDefinition Width="155"/>
+                <ColumnDefinition Width="155"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0"
                   Margin="0,0,5,0">
@@ -53,6 +54,10 @@
                         Click="NewTicketBtn_OnClick">
                     Add new Ticket
                 </Button>
+            </Grid>
+            <Grid Grid.Column="4">
+                <Label>Search</Label>
+                <TextBox x:Name="SearchTxt" TextChanged="SearchTxt_OnTextChanged"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="2">
