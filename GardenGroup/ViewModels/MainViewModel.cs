@@ -99,10 +99,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
     #region Switches
 
     public void SwitchToLogin() => CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel, MainViewModel>(this);
-    
+    public void SwitchToLogout() => CurrentView = _viewModelFactory.CreateViewModel<LoginViewModel>();
+
     public void SwitchToResetPassword() => CurrentView = _viewModelFactory.CreateViewModel<PasswordResetViewModel>();
-    
+
     public void SwitchToDashboard() => CurrentView = _viewModelFactory.CreateViewModel<DashboardViewModel>();
+    public void SwitchToManageEmployees() => CurrentView = _viewModelFactory.CreateViewModel<ManageEmployeesViewModel>();
 
     public void SwitchToTickets()
     {

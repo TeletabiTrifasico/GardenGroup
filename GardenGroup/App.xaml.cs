@@ -33,9 +33,11 @@ public partial class App : Application
                 services.AddTransient<MyTicketsViewModel>();
                 services.AddTransient<TicketSubmissionViewModel>();
                 services.AddTransient<LookupTicketViewModel>();
+                services.AddTransient<ManageEmployeesViewModel>();
                 services.AddTransient<IServiceManager, ServiceManager>();
             }).Build();
     }
+
 
     protected override async void OnStartup(StartupEventArgs e)
     {
@@ -46,7 +48,6 @@ public partial class App : Application
             
         base.OnStartup(e);
     }
-
     protected override async void OnExit(ExitEventArgs e)
     {
         await AppHost!.StopAsync();
